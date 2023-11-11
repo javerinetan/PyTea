@@ -1,0 +1,77 @@
+<!-- staff_updateorder.html -->
+{% extends "base.html" %}
+{% block title %} Staff PyTea - Update Order{% endblock %}
+
+{% block content %}
+{% from "includes/form_helper.html" import render_field %}
+<script>
+    nav = document.getElementsByClassName("nav-link");
+    nav[0].classList.add("active");
+    nav[1].classList.remove("active");
+    nav[2].classList.remove("active");
+    nav[3].classList.remove("active")
+</script>
+<style>
+    .header {
+        padding: 2rem 1.5rem;
+        text-align: center;
+    }
+
+    .lead {
+        font-size: 1.25rem;
+        font-weight: 300;
+    }
+    .updatedrinks {
+         display: flex;
+         flex-direction: column;
+         align-items: center;
+    }
+    .submit {
+        flex: 1;
+        margin-right: 10px;
+        margin-left: 10px;
+        padding: 6px 255px;
+        min-width: 200px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 1rem;
+    }
+    .formstext {
+        margin-top: 1rem;
+    }
+
+</style>
+<main class="container">
+    <div class="header">
+        <h1>Update Order</h1>
+        <p>{{drink_name}}</p>
+    </div>
+    <form method="POST" class="updatedrinks">
+        <div class="formstext col-md-6">
+            {{ render_field(form.quantity, class="form-control") }}
+            <div class="invalid-feedback">
+                Please enter the quantity
+            </div>
+        </div>
+        <div class="formstext col-md-6">
+            {{ render_field(form.size, class="form-control") }}
+            <div class="invalid-feedback">
+                Please select a size
+            </div>
+        </div>
+        <div class="formstext col-md-6">
+            {{ render_field(form.sugar_level, class="form-control") }}
+            <div class="invalid-feedback">
+                Please select a sugar level
+            </div>
+        </div>
+        <div class="formstext col-md-6">
+            {{ render_field(form.topping, class="form-control") }}
+        </div>
+        <div class="">
+            <input type="submit" value="Submit" class="submit btn btn-primary" />
+        </div>
+    </form>
+</main>
+{% endblock %}

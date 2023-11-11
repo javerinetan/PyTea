@@ -1,0 +1,319 @@
+{% extends "base.html" %}
+{% block title %} PyTea - Checkout {% endblock %}
+
+{% block content %}
+{% from "includes/form_helper.html" import render_field %}
+<script>
+  nav = document.getElementsByClassName("nav-link");
+  nav[0].classList.remove("active");
+  nav[1].classList.remove("active");
+  nav[2].classList.add("active");
+  nav[3].classList.remove("active")
+</script>
+<style>
+  .header {
+    padding: 3rem 1.5rem;
+    text-align: center;
+  }
+  .header {
+    padding: 2rem 1.5rem 1rem;
+    text-align: center;
+  }
+
+  .lead {
+    font-size: 1.1rem;
+    font-weight: 300;
+  }
+  
+  .listed{
+    font-size: 0.9rem;
+  }
+
+  .button {
+    background-color: white;
+    width: 26 rem;
+    color: black;
+    border-color: #ecdac7;
+    transition-duration: 0.4s;
+    padding: 25px;
+    margin-right: 2rem;
+    margin-bottom: 2rem;
+    text-decoration: none;
+    border: 0.5px solid #bf8445;
+  }
+
+  .button:hover {
+    background-color: #bf8445;
+    color: black;
+
+  }
+
+  .button h1 {
+    font-size: 1.25rem;
+  }
+
+  .generic-feedback {
+    height: 80%;
+    width: 80%;
+    padding: 2rem;
+  }
+
+  .contact {
+    height: 80%rem;
+    width: 80%;
+    padding: 2rem;
+  }
+
+  .fa-solid.fa-arrow-left {
+    color: #000000;
+    font-size: 30px;
+    position: absolute;
+    top: 15%;
+    left: 4%;
+  }
+
+  .container {
+    max-width: 1200px;
+  }
+
+  .border-top {
+    border-top: 1px solid #e5e5e5;
+  }
+
+  .border-bottom {
+    border-bottom: 1px solid #e5e5e5;
+  }
+
+  .border-top-gray {
+    border-top-color: #adb5bd;
+  }
+
+  .box-shadow {
+    box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+  }
+
+  .lh-condensed {
+    line-height: 1.25;
+  }
+</style>
+<main class="container">
+  <div class="header">
+    <a href="/shopping-bag">
+      <i class="fa-solid fa-arrow-left"></i>
+    </a>
+  </div>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4 order-md-2 mb-4">
+        <h4 class="d-flex justify-content-between align-items-center mb-3">
+          <p class="s-header"><span class="small text-muted">Shopping Bag</span>
+            <span class="small text-muted">({{ shoppingbag|length }} item in your bag)</span>
+          </p>
+        </h4>
+        <ul class="list-group mb-3">
+        {% for drink in shoppingbag %}
+        
+          <li class="list-group-item d-flex justify-content-between lh-condensed">
+            <!-- Display the drink information here -->
+            <div class="mb-2">
+              <p class="small text-muted mb-2">Item</p>
+              <p class="lead fw-normal mb-0">{{ drink.get_name() }}</p>
+              <ul class="pt-1">
+                <li class="listed">{{ drink.get_sugar_level() }}</li>
+                {% for t in drink.get_topping() %}
+                <li class="listed">{{ t }}</li>
+                {% endfor %}
+              </ul>
+            </div>
+            <div class="col-md-2 d-flex justify-content-center">
+              <div>
+                <p class="small text-muted mb-2">Size</p>
+                {% if drink.get_size() == 'Medium' %}
+                <p class="lead fw-normal mb-0">M</p>
+                {% elif drink.get_size() == "Large"%}
+                <p class="lead fw-normal mb-0">L</p>
+                {% endif %}
+              </div>
+            </div>
+            <div class="col-md-2 d-flex justify-content-center">
+              <div>
+                <p class="small text-muted mb-2">Quantity</p>
+                <p class="lead fw-normal mb-0">{{ drink.get_quantity() }}</p>
+              </div>
+            </div>
+            <div class="col-md-2 d-flex justify-content-center">
+              <div>
+                <p class="small text-muted mb-2">Total</p>
+                <p class="lead fw-normal mb-0">${{ "%.2f"|format(drink.get_total_cost()) }}</p>
+              </div>
+            </div>
+          </li>
+        
+        {% endfor %}
+      </ul>
+        <span class="small text-muted me-2">Order total:</span>
+        <span class="lead fw-normal">${{ "%.2f"|format(total) }}</span>
+      </div>
+      <div class="col-md-8 order-md-1">
+        <br>
+        <h4 class="mb-3">Billing Address</h4>
+        <form class="needs-validation" method="POST" action="" novalidate>
+          {% if current_user.get_address() != None %}
+          <div class="mb-3">
+            <label for="address">Address</label>
+            <input type="text" name="address" id="address" value="{{current_user.get_address()}}" class="form-control" placeholder="Enter your address" required>
+            <div class="invalid-feedback">
+              Please enter your address.
+            </div>
+          </div>
+          {% else %}
+          <div class="mb-3">
+            <label for="address">Address</label>
+            {{ render_field(form.address, class="form-control", placeholder="Enter your address", required="required") }}
+            <div class="invalid-feedback">
+              Please enter your address.
+            </div>
+          </div>
+          {% endif %}
+
+          {% if current_user.get_postal_code() != None %}
+          <div class="mb-3">
+            <label for="postal_code"></label>
+            <input type="text" name="postal_code" id="postal_code" value="{{current_user.get_postal_code()}}" class="form-control" required>
+            <div class="invalid-feedback">
+              Please enter your postal code.
+            </div>
+          </div>
+          {% else %}
+          <div class="mb-3">
+            <label for="postal_code"></label>
+            {{ render_field(form.postal_code, class="form-control", placeholder="Enter your postal code", required="required") }}
+            <div class="invalid-feedback">
+              Please enter your postal code.
+            </div>
+          </div>
+          {% endif %}
+
+          {% if current_user.get_address() != None and current_user.get_postal_code() != None %}
+          {% else %}
+          <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="save-info" name="save-info">
+            <label class="custom-control-label" for="save-info">Save this information for next time</label>
+          </div>
+          {% endif %}
+
+          <hr class="mb-4">
+
+          <h4 class="mb-3">Payment</h4>
+
+          <div class="d-block my-3">
+            <div class="form-group">
+              {{ render_field(form.payment_method, class="form-check", style="list-style-type: none") }}
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="cc-name"></label>
+              {{ render_field(form.card_name, class="form-control") }}
+              <div class="invalid-feedback">
+                Name on card is required
+              </div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="cc-number"></label>
+              {{ render_field(form.card_number, class="form-control") }}
+              <div class="invalid-feedback">
+                Credit card number is required
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="cc-expiration"></label>
+              {{ render_field(form.card_expiration, class="form-control") }}
+              <div class="invalid-feedback">
+                Expiration date required
+              </div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="cc-expiration"></label>
+              {{ render_field(form.card_cvv, class="form-control") }}
+              <div class="invalid-feedback">
+                Security code required
+              </div>
+            </div>
+          </div>
+          <hr class="mb-4">
+          <input type="submit" value="Checkout" class="btn btn-primary btn-lg btn-block w-100">
+        </form>
+      </div>
+      <!-- Modal
+      <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="successModalLabel">Success!</h5>
+            </div>
+            <div class="modal-body">
+              Your order has been placed successfully.
+            </div>
+          </div>
+        </div>
+      </div> -->
+</main>
+<!-- <script>
+    // // Example starter JavaScript for disabling form submissions if there are invalid fields
+    // (function () {
+    //   'use strict';
+
+    //   window.addEventListener('load', function () {
+    //     // Fetch all the forms we want to apply custom Bootstrap validation styles to
+    //     var forms = document.getElementsByClassName('needs-validation');
+
+    //     // Loop over them and prevent submission
+    //     var validation = Array.prototype.filter.call(forms, function (form) {
+    //       form.addEventListener('submit', function (event) {
+    //         if (form.checkValidity() === false) {
+    //           event.preventDefault();
+    //           event.stopPropagation();
+    //         }
+    //         form.classList.add('was-validated');
+    //       }, false);
+    //     });
+    //   }, false);
+    // })();
+
+
+  // Function to close the success modal
+  function closeSuccessModal() {
+    $('#successModal').modal('hide');
+  }
+
+  // Function to show the success modal
+  function showSuccessModal() {
+    $('#successModal').modal('show');
+  }
+
+  // Wait for the DOM to be ready
+  document.addEventListener('DOMContentLoaded', function () {
+    // Get the form element
+    var form = document.querySelector('.needs-validation');
+
+    // Add event listener to the form submission
+    form.addEventListener('submit', function (event) {
+      // Prevent default form submission
+      event.preventDefault();
+
+      // Check if the form is valid
+      if (form.checkValidity()) {
+        // Call the function to show the success modal
+        showSuccessModal();
+      }
+
+      // Add Bootstrap's validation styles to the form
+      form.classList.add('was-validated');
+    });
+  });
+</script> -->
+{% endblock %}

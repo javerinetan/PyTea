@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% block title %} PyTea - Contact Us {% endblock %}
+
+
+{% block content %}
+{% from "includes/form_helper.html" import render_field %}
+<script>
+    nav = document.getElementsByClassName("nav-link");
+    nav[0].classList.remove("active");
+    nav[1].classList.remove("active");
+    nav[2].classList.add("active");
+    nav[3].classList.remove("active")
+</script>
+<style>
+    .header {
+        padding: 3rem 1.5rem;
+        text-align: center;
+    }
+    .lead{
+        font-size: 1.25rem;
+        font-weight: 300;
+    }
+
+</style>
+<main class="container">
+    <div class="header">
+        <h1>Contact Us</h1>
+            <p class="lead">
+                Please fill in your details accordingly so that we can contact you shortly within the next 1-2 working days.
+                Please check your email after submitting the response for confirmation that we have received your email.
+            </p>
+    </div>
+    <form class="row g-2 needs-validation" action="" method="POST" novalidate>
+        <div class="col-md-6">
+            {{ render_field(form.first_name, class="form-control") }}
+<!--            <div class="valid-feedback">-->
+<!--                Looks good!-->
+<!--            </div>-->
+            <div class="invalid-feedback">
+                Please enter your first name.
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            {{ render_field(form.last_name, class="form-control") }}
+<!--            <div class="valid-feedback">-->
+<!--                Looks good!-->
+<!--            </div>-->
+            <div class="invalid-feedback">
+                Please enter your last name.
+            </div>
+        </div>
+        <div class="col-md-6">
+            {{ render_field(form.email, class="form-control") }}
+<!--            <div class="valid-feedback">-->
+<!--                Looks good!-->
+<!--            </div>-->
+            <div class="invalid-feedback">
+                Please enter a valid email.
+            </div>
+        </div>
+<!--        Validating the email-->
+<!--        <script>-->
+<!--            const emailInput = document.getElementById('email');-->
+
+<!--            emailInput.addEventListener('input', function () {-->
+<!--                const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;-->
+<!--                if (!emailPattern.test(emailInput.value)) {-->
+<!--                    emailInput.setCustomValidity('Please enter a valid email.');-->
+<!--                } else {-->
+<!--                    emailInput.setCustomValidity('');-->
+<!--                }-->
+<!--            });-->
+<!--        </script>-->
+        <div class="col-md-6">
+            {{ render_field(form.salutation, class="form-select") }}
+            <div class="invalid-feedback">
+                Please select a saluation
+            </div>
+        </div>
+
+        <div class="col-md-12">
+            <!-- <label for="validationTextarea" class="form-label">Feedback</label>
+            <input type="text" class="form-control" id="validationTextarea" name="comment" required> -->
+            {{ render_field(form.feedback, class="form-control") }}
+            <div class="invalid-feedback">
+                Please enter a message in the textarea.
+            </div>
+        </div>
+        <!-- spacing between input and button -->
+        <div class="col-md-12"></div> 
+        <br>
+        <input type="submit" value="Submit" class="btn btn-primary"/>
+    </form>
+
+
+
+</main>
+
+{% endblock %}

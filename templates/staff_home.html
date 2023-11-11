@@ -1,0 +1,377 @@
+{% extends "base.html" %}
+{% block title %} Staff PyTea - Home Page{% endblock %}
+
+{% block content %}
+{% from "includes/form_helper.html" import render_field %}
+<script>
+  nav = document.getElementsByClassName("nav-link");
+  nav[0].classList.add("active");
+  nav[1].classList.remove("active");
+  nav[2].classList.remove("active");
+  nav[3].classList.remove("active");
+
+  $(document).ready(function () {
+    $("#myInput").on("keyup", function () {
+      var value = $(this).val().toLowerCase();
+      $("#myTable tr").filter(function () {
+        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+      });
+    });
+  });
+
+</script>
+<style>
+  .nav-link {
+    color: #808080;
+  }
+
+  .nav-link:hover,
+  .nav-link active {
+    color: black;
+  }
+
+  .header {
+    padding: 3rem 1.5rem;
+    text-align: center;
+  }
+
+  .lead {
+    font-size: 1.25rem;
+    font-weight: 300;
+  }
+
+  .dates {
+    display: flex;
+    justify-content: center;
+  }
+
+  .btn-danger {
+    color: white;
+  }
+
+  .btn-danger:hover {
+    background-color: #BF0000;
+  }
+
+  .btn-warning {
+    background-color: #eee4d3;
+  }
+
+  .btn-warning:hover {
+    background-color: #eee4d3;
+    color: black;
+  }
+
+  .table-danger {
+    background-color: #f8d7da;
+    /* Red color */
+    color: #000000;
+    /* Text color */
+  }
+
+  .table-success {
+    background-color: #d4edda;
+    /* Green color */
+    color: #000000;
+    /* Text color */
+  }
+
+  .table-warning {
+    background-color: #fff3cd;
+    /* Yellow color */
+    color: #000000;
+    /* Text color */
+  }
+
+  .red-row td {
+    color: red;
+  }
+</style>
+<div class="header">
+  <h1 class="text-capitalize">Welcome {{current_user.get_name()}}</h1>
+  <p class="lead">
+    A new day, let's start off with a great tea!
+  </p>
+</div>
+<div class="container">
+  <!-- <h1>Staff Home page</h1> -->
+  <ul class="nav nav-tabs" id="myTab" role="tablist">
+    <li class="nav-item" role="presentation">
+      <button class="nav-link active" id="home-tab" data-toggle="tab" data-target="#home" type="button" role="tab"
+        aria-controls="home" aria-selected="true">Orders</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="profile-tab" data-toggle="tab" data-target="#profile" type="button" role="tab"
+        aria-controls="profile" aria-selected="false">Leave Information</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="contact-tab" data-toggle="tab" data-target="#contact" type="button" role="tab"
+        aria-controls="contact" aria-selected="false">Apply for leave</button>
+    </li>
+  </ul>
+  <div class="tab-content" id="myTabContent">
+    <div class="tab-pane fade show container active" id="home" role="tabpanel" aria-labelledby="home-tab">
+      <div class="mt-3">
+        <div class="form-row align-items-center">
+          <div class="row">
+          <div class="col-md-9">
+            <label for="myInput">Search:</label>
+            <input class="form-control" id="myInput" type="text" placeholder="Search..">
+          </div>
+          <div class="col-md-3 day" id="{{today}}">
+            <label for="filterDate">Filter by Date:</label>
+            <input type="date" id="filterDate" class="form-control" max="{{today}}">
+          </div>
+            </div>
+        </div>
+        <br>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Order ID</th>
+              <th>User Email</th>
+              <th>Order Date</th>
+              <th>Order Items</th>
+              <th>Drink Cost</th>
+              <th>Update</th>
+              <th>Delete</th>
+            </tr>
+          </thead>
+          <tbody id="myTable">
+            {% for order in order_list %}
+            {% set items = order.get_order().values() %} {# Retrieve all items for the current order #}
+            {% for item in items %}
+            <tr class="{{order.get_date().date()}}">
+              {% if loop.first %} {# Display order_id, user_email, and date only for the first row #}
+              <td rowspan="{{ items|length }}">{{ order.get_order_id() }}</td>
+              <td rowspan="{{ items|length }}">{{ order.get_user_email() }}</td>
+              <td rowspan="{{ items|length }}">{{ order.get_date().date() }}</td>
+              {% endif %}
+              <td>
+                {{ item.get_name() }} (Quantity: {{ item.get_quantity() }})
+                <ul>
+                  <li>{{ item.get_size() }}</li>
+                  <li>{{ item.get_sugar_level() }}</li>
+                  {% for t in item.get_topping() %}
+                  <li>{{ t }}</li>
+                  {% endfor %}
+                </ul>
+              </td>
+              <td>${{ "%.2f"|format(item.get_total_cost()) }}</td>
+              <td>
+                <a href="{{ url_for('staff.update_order', id=order.get_order_id(), drink_id=item.get_drink_id()) }}"
+                  type="button" class="btn btn-primary">Update</a>
+              </td>
+              <td>
+                <form
+                  action="{{ url_for('staff.delete_order',  id=order.get_order_id(), drink_id=item.get_drink_id()) }}"
+                  method="POST">
+                  <!-- Button to Open the Modal -->
+                  <i class="fa-solid fa-trash-can" style="color: #000000; font-size: 1.5rem; justify-content: center;"
+                    data-toggle="modal" data-target="#myModal_{{item.get_drink_id()}}"></i>
+                  <!-- The Modal -->
+                  <div class="modal" id="myModal_{{item.get_drink_id()}}">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+
+                        <!-- Modal Header -->
+                        <div class="modal-header">
+                          <h4 class="modal-title">Delete Confirmation</h4>
+                          <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+
+                        <!-- Modal body -->
+                        <div class="modal-body">
+                          <p>Are you sure you want to delete this order?</p>
+                          <form id="deleteForm">
+                            <div class="form-group">
+                              <label for="deleteReason">Reason for deleting this order</label>
+                              <select class="form-control" id="deleteReason" required>
+                                <option value="" disabled selected>Select a reason</option>
+                                <option value="inappropriate">Cancelled Order</option>
+                                <option value="duplicate">Duplicated Order</option>
+                              </select>
+                            </div>
+                          </form>
+                        </div>
+
+
+                        <!-- Modal footer -->
+                        <div class="modal-footer">
+                          <input type="submit" value="Delete" class="btn btn-danger">
+                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </td>
+             
+            </tr>
+            {% endfor %}
+          {% endfor %}
+          </tbody>
+        </table>
+
+
+        </table>
+      </div>
+    </div>
+
+    <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+      <main class="container mt-3 mx-auto">
+        <div class="dates">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Leave Type</th>
+                <th>Reason</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for leave in current_user.get_leave() %}
+              <tr>
+                <td>{{ leave.get_leave_startdate() }}</td>
+                <td>{{ leave.get_leave_enddate() }}</td>
+                <td>{{ leave.get_leave_type() }}</td>
+                <td>{{ leave.get_reason() }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </main>
+
+    </div>
+
+    <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+      <br>
+      <main class="container">
+        <form method="POST" action="/staff/leave" class="row g-2">
+          <div class="col-md-6">
+            <label for="filterDate">Start Date:</label>
+            <input type="date" name="start_date"  id="StartDate" class="form-control" min="{{today}}" required>
+          </div>
+          <br>
+          <div class="col-md-6">
+            <label for="filterDate">End Date:</label>
+            <input type="date"  name="end_date"  id="EndDate" class="form-control" min="{{today}}" required>
+          </div>
+
+          <div class="col-md-6">
+            <label for="type" class="form-label">Leave Type</label>
+            <select class="form-select" id="type" name='type' required>
+              <option selected disabled value="">Leave Type</option>
+              <option value="Annual">Annual Leave</option>
+              <option value="Half Day">Half Day Leave</option>
+              <option value="Sick">Sick leave</option>
+              <option value="Maternity">Maternity Leave</option>
+              <option value="Unpaid">Unpaid Leave</option>
+            </select>
+            <div class="invalid-feedback">
+              Please select a valid state.
+            </div>
+          </div>
+          <div class="col-md-6">
+            <label for="reason" class="form-label">Reason</label>
+            <input type="text" class="form-control" id="reason" name="reason" required>
+          </div>
+          <div class="col-md-6"></div>
+          <div class="col-md-6"></div>
+          <input type="submit" id="submitBtn" value="Submit" class="btn btn-primary" />
+        </form>
+      </main>
+    </div>
+  </div>
+</div>
+<script>
+  $(document).ready(function () {
+    // Your existing script code
+    nav = document.getElementsByClassName("nav-link");
+    nav[0].classList.add("active");
+    nav[1].classList.remove("active");
+    nav[2].classList.remove("active");
+    nav[3].classList.remove("active");
+
+    $("#myInput").on("keyup", function () {
+      var value = $(this).val().toLowerCase();
+      $("#myTable tr").filter(function () {
+        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+      });
+    });
+
+    $("#StartDate").on("change", function () {
+      var selectedStartDate = new Date($(this).val());
+      var today = new Date();
+
+      validateDateRange();
+    });
+
+    $("#EndDate").on("change", function () {
+      validateDateRange();
+    });
+
+    function validateDateRange() {
+      var startDate = new Date($("#StartDate").val());
+      var endDate = new Date($("#EndDate").val());
+
+      if (startDate > endDate) {
+        $("#dateFeedback").text("End Date must be after Start Date");
+        $("#EndDate").addClass("is-invalid");
+        $("#submitBtn").attr("disabled", true);
+      } else {
+        $("#dateFeedback").text("");
+        $("#EndDate").removeClass("is-invalid");
+        $("#submitBtn").removeAttr("disabled");
+      }
+    }
+
+    $("#filterDate").on("change", function () {
+      var selectedDate = new $(this).val();
+      var foundOrders = false; // Initialize flag
+      var today = new $(".day").attr('id');
+
+      $("#myTable tr").each(function () {
+        var orderDate = new $(this).attr('class');
+        if (selectedDate === orderDate) {
+          $(this).show();
+          foundOrders = true;
+        } else {
+          $(this).hide();
+        }
+      });
+
+      if (!foundOrders && selectedDate === today)  {
+        $("#myTable").append('<tr><td colspan="7">No orders today</td></tr>');
+      } else{
+        $("#myTable").append('<tr><td colspan="7">No orders</td></tr>');       
+      }
+    });
+  });
+  $(window).on('load', showDatetime());
+  function showDatetime() {  
+      var selectedDate = new $(".day").attr('id');
+      var foundOrders = false; // Initialize flag
+      document.getElementById('filterDate').value=selectedDate
+      $("#myTable tr").each(function () {
+        var orderDate = new $(this).attr('class');
+        if (selectedDate === orderDate) {
+          $(this).show();
+          foundOrders = true;
+        } else {
+          $(this).hide();
+        }
+      });
+
+      if (!foundOrders) {
+        $("#myTable").append('<tr><td colspan="7">No orders today</td></tr>');
+      }
+
+  }
+</script>
+
+
+{% endblock %}

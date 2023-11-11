@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block title %}PyTea - Login{% endblock %}
+
+{% block content %}
+{% from "includes/form_helper.html" import render_field %}
+<script>
+  nav = document.getElementsByClassName("nav-link");
+  nav[0].classList.remove("active");
+  nav[1].classList.remove("active");
+  nav[2].classList.remove("active");
+  nav[3].classList.remove("active");
+</script>
+<style>
+    .header {
+        padding: 3rem 1.5rem;
+        text-align: center;
+    }
+    .lead{
+        font-size: 1.25rem;
+        font-weight: 300;
+    }
+    .login-form {
+        display: flex;
+        justify-content: center;
+    }
+</style>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+   {% if messages %}
+      {% for category, message in messages %}
+      {% if category == 'success' %}
+      <div class="alert alert-success alter-dismissable fade show" role="alert">
+        {{ message }}
+        <button class="close" data-dismiss="alert">
+         <!-- fix this x button -->
+         <span aria-hidden="true" style="font-size: 20px; margin-left: 10px;">&times;</span>
+        </button>
+     </div>
+      {% else %}
+      <div class="alert alert-danger alter-dismissable fade show" role="alert">
+         {{ message }}
+         <button class="close" data-dismiss="alert">
+          <!-- fix this x button -->
+          <span aria-hidden="true" style="font-size: 20px; margin-left: 10px;">&times;</span>
+         </button>
+      </div>
+      {% endif %}
+      {% endfor %}
+   {% endif %}
+{% endwith %}
+
+<main class="container ">
+    <div class="header">
+        <h1 class="display-4">Login</h1>
+    </div>
+    <div class="login-form">
+        <form method="POST" action="" class="row g-2">
+            <div class="col-md-23" >
+                {{ render_field(form.email, class="form-control") }}
+            </div>
+            <div id="prof">
+                <div class="col-md-23">
+                    {{ render_field(form.password, class="form-control") }}
+                </div>
+            </div>
+            <div id="prof">
+                <a href="/forgot-password">Forgot my Password</a>
+            </div>
+            <div class="col-md-23" > </div>
+            <input type="submit" value="Login" class="btn btn-primary text-center mb-4"/>
+        </form>
+    </div>
+</main>
+{% endblock %}

@@ -1,0 +1,274 @@
+{% extends "base.html" %}
+{% block title %} PyTea - Shopping Bag {% endblock %}
+
+{% block content %}
+<script>
+  nav = document.getElementsByClassName("nav-link");
+  nav[0].classList.remove("active");
+  nav[1].classList.remove("active");
+  nav[2].classList.remove("active");
+  nav[3].classList.remove("active")
+</script>
+<style>
+  .header {
+    padding: 3rem 1.5rem;
+    text-align: center;
+  }
+  .btn-danger{
+    color: white;
+  }
+  .btn-danger:hover{
+    background-color: #BF0000;
+  }
+  .lead {
+    font-size: 1.25rem;
+    font-weight: 300;
+  }
+
+  .button {
+    background-color: white;
+    width: 26 rem;
+    color: black;
+    border-color: #ecdac7;
+    transition-duration: 0.4s;
+    padding: 25px;
+    margin-right: 2rem;
+    margin-bottom: 2rem;
+    text-decoration: none;
+    border: 0.5px solid #bf8445;
+  }
+
+  .button:hover {
+    background-color: #bf8445;
+    color: black;
+
+  }
+
+  .button h1 {
+    font-size: 1.25rem;
+  }
+
+  .generic-feedback {
+    height: 80%;
+    width: 80%;
+    padding: 2rem;
+  }
+
+  .contact {
+    height: 80%rem;
+    width: 80%;
+    padding: 2rem;
+  }
+
+  .btn-lg {
+    padding: 10px 20px;
+    width: 20%;
+    font-size: 20px;
+  }
+  /* Adjust styles for the card container */
+  .card-container {
+    margin-bottom: 2rem;
+  }
+
+  /* Adjust styles for the card body */
+  .card-body {
+    padding: 1.5rem 1rem; /* Adjust padding as needed */
+  }
+
+  /* Adjust styles for the card title and subtitle */
+  .card-title,
+  .card-subtitle {
+    margin-bottom: 0.5rem;
+  }
+
+  /* Adjust styles for the item list */
+  .item-list {
+    margin-bottom: 1rem;
+  }
+
+  /* Set a minimum height for the item list */
+  .item-list {
+    min-height: 4rem; /* Change this value as needed */
+  }
+
+  /* Adjust styles for the checkout button container */
+  .checkout-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 1rem;
+  }
+
+  /* Adjust styles for the card container */
+  .card-container {
+    margin-bottom: 2rem;
+  }
+
+  /* Adjust styles for the card body */
+  .card-body {
+    padding: 1.5rem 1rem; /* Adjust padding as needed */
+  }
+
+  /* Adjust styles for the card title and subtitle */
+  .card-title,
+  .card-subtitle {
+    margin-bottom: 0.5rem;
+  }
+
+  /* Adjust styles for the item list */
+  .item-list {
+    margin-bottom: 1rem;
+  }
+
+  /* Set a minimum height for the item list */
+  .item-list {
+    min-height: 4rem; /* Change this value as needed */
+  }
+
+  /* Adjust styles for the checkout button container */
+  .checkout-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 1rem;
+  }
+</style>
+{% with messages = get_flashed_messages() %}
+   {% if messages %}
+      {% for message in messages %}
+      <div class="alert alert-success alter-dismissable fade show" role="alert">
+         {{ message }}
+         <button class="close" data-dismiss="alert">
+          <!-- fix this x button -->
+          <span aria-hidden="true" style="font-size: 20px; margin-left: 10px;">&times;</span>
+         </button>
+      </div>
+      {% endfor %}
+   {% endif %}
+{% endwith %}
+
+<main class="container">
+  <section >
+    <div class="container">
+      <div class="row d-flex justify-content-center align-items-center">
+        {% if count == 0 %}
+        <div class="">
+          <p class="header"><span class="h2">Shopping Bag </span>
+            <span class="h4">({{count}} item in your bag)</span>
+          </p>
+          <div class="h4" style="text-align: center;">
+            Your shopping cart is empty!<br />Go to <a href="/menu">Menu</a> to start ordering
+          </div>
+        </div>
+        
+
+        {% else %}
+        <div class="col">
+          <p class="header"><span class="h2">Shopping Bag </span>
+            <span class="h4">({{count}} item in your bag)</span>
+          </p>
+          {% for drink in shoppingbag %}
+          <div class="card mb-4">
+            <div class="card-body p-4">
+
+              <div class="row align-items-center">
+                
+                <div class="col-md-4 d-flex " style="padding-left: 50px;">
+                  <div>
+                    <p class="small text-muted mb-2 pb-2">Item</p>
+                    <p class="lead fw-normal mb-0">{{drink.get_name()}}</p>
+                    
+                      <ul>
+                        <li>{{drink.get_sugar_level()}}</li>
+                        {% for t in drink.get_topping() %}
+                          <li>{{t}}</li>
+                        {% endfor %}
+                      </ul>
+                    
+                  </div>
+                </div>
+                <div class="col-md-2 d-flex justify-content-center">
+                  <div>
+                    <p class="small text-muted mb-2 pb-2">Size</p>
+                    <p class="lead fw-normal mb-0">{{drink.get_size()}}</p>
+                  </div>
+                </div>
+                <div class="col-md-2 d-flex justify-content-center">
+                  <div>
+                    <p class="small text-muted mb-2 pb-2">Quantity</p>
+                    <p class="lead fw-normal mb-0">{{drink.get_quantity()}}</p>
+                  </div>
+                </div>
+                <div class="col-md-2 d-flex justify-content-center">
+                  <div>
+                    <p class="small text-muted mb-2 pb-2">Total</p>
+                    <!-- idk how to multiply the quantity and cost -->
+                    <p class="lead fw-normal mb-0">${{ "%.2f"|format(drink.get_total_cost())}}</p>
+                  </div>
+                </div>
+                <div class="col-md-2 d-flex justify-content-center" style="margin-top: 1.5%;">
+                  <div>
+                    
+                    <form action="{{url_for('delete_drink', id=drink.get_drink_id())}}" method="POST">
+                      <!-- Button to Open the Modal -->
+                      <i class="fa-solid fa-trash-can" style="color: #000000; font-size: 1.5rem;" data-toggle="modal" data-target="#myModal_{{drink.get_drink_id()}}"></i>
+                  
+                      <!-- The Modal -->
+                      <div class="modal" id="myModal_{{drink.get_drink_id()}}">
+                        <div class="modal-dialog">
+                          <div class="modal-content">
+                  
+                            <!-- Modal Header -->
+                            <div class="modal-header">
+                              <h4 class="modal-title">Delete Confirmation</h4>
+                              <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div>
+                  
+                            <!-- Modal body -->
+                            <div class="modal-body">
+                              Are you sure you want to delete your drink
+                              ({{drink.get_name()}})?
+                            </div>
+                  
+                  
+                            <!-- Modal footer -->
+                            <div class="modal-footer">
+                              <input type="submit" value="Delete" class="btn btn-danger">
+                              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                            </div>
+                  
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+          {% endfor %}
+
+          <div class="card mb-5">
+            <div class="card-body p-4">
+
+              <div class="float-end">
+                <p class="mb-0 me-5 d-flex align-items-center">
+                  <span class="small text-muted me-2">Order total:</span> <span class="lead fw-normal">${{ "%.2f"|format(total) }}</span>
+                </p>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="d-flex justify-content-end">
+            <a href="/checkout" class="btn btn-primary btn-lg">Checkout</a>
+          </div>
+
+        </div>
+        
+        {% endif %}
+      </div>
+    </div>
+  </section>
+</main>
+{% endblock %}
+

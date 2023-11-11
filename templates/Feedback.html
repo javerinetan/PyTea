@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% block title %} PyTea - Feedback {% endblock %}
+
+{% block content %}
+<script>
+    nav = document.getElementsByClassName("nav-link");
+    nav[0].classList.remove("active");
+    nav[1].classList.remove("active");
+    nav[2].classList.add("active");
+    nav[3].classList.remove("active")
+</script>
+<style>
+    .header {
+        padding: 3rem 1.5rem;
+        text-align: center;
+    }
+    .lead{
+        font-size: 1.25rem;
+        font-weight: 300;
+    }
+    .button{
+        background-color: white;
+        width: 26 rem;
+        color: black;
+        border-color: #ecdac7;
+        transition-duration: 0.4s;
+        padding: 25px;
+        margin-right:2rem;
+        margin-bottom: 2rem;
+        text-decoration: none;
+        border: 0.5px solid #b87253;
+    }
+    .button:hover{
+        background-color: #eddfc7;
+        color: black;
+
+    }
+
+    .button h1{
+        font-size: 1.25rem;
+    }
+
+    .generic-feedback{
+        height: 80%;
+        width: 80%;
+        padding: 2rem;
+    }
+    .contact{
+        height: 80%rem;
+        width: 80%;
+        padding: 2rem;
+    }
+
+
+</style>
+<main class="container">
+    <div class="header">
+        <h1>Help us to improve</h1>
+            <p class="lead">
+                Let us know what you like or dislike on Pytea.com.
+                <br>
+                For assistance please select contact us, to let us know what we can assist you on.
+            </p>
+        <div class="container text-center">
+          <a href="/generic-feedback" type="button" class="button" >
+              <img class="generic-feedback" src="{{ url_for('static', filename='images/generic_feedback.png') }}" alt="image">
+              <h1>Generic Feedback</h1>
+              <p>Rating our services</p>
+          </a>
+          <a href="/contact-us" type="button" class="button ">
+              <img class="contact" src="{{ url_for('static', filename='images/contact.png') }}" alt="image">
+              <h1>Contact Us</h1>
+              <p>Get your questions answered</p>
+          </a>
+        </div>
+    </div>
+</main>
+
+{% endblock %}

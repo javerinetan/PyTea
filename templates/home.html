@@ -1,0 +1,162 @@
+{% extends "base.html" %}
+{% block title %} PyTea - Only the best {% endblock %}
+<!-- {% block css %}    
+<link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+{% endblock%} -->
+{% block content %}
+<script>
+  nav = document.getElementsByClassName("nav-link");
+  nav[0].classList.add("active");
+  nav[1].classList.remove("active");
+  nav[2].classList.remove("active");
+  nav[3].classList.remove("active");
+</script>
+<style>
+  .carousel-control-prev-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='black' width='4' height='10' viewBox='0 0 8 8'%3e%3cpath d='M5.25 0l-4 4 4 4 1.5-1.5L4.25 4l2.5-2.5L5.25 0z'/%3e%3c/svg%3e");
+  }
+
+  .carousel-control-next-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='black' width='4' height='10' viewBox='0 0 8 8'%3e%3cpath d='M2.75 0l-1.5 1.5L3.75 4l-2.5 2.5L2.75 8l4-4-4-4z'/%3e%3c/svg%3e");
+  }
+
+  .carousel-image {
+    width: 63%;
+    margin: 0 auto;
+  }
+</style>
+<div id="myCarousel" class="carousel slide" data-bs-ride="carousel">
+  <div class="carousel-indicators">
+    <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="0" class="active" aria-current="true"
+      aria-label="Slide 1"></button>
+    <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+    {% if current_user.is_authenticated %}
+    {% else %}
+    <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+    {% endif%}
+  </div>
+  <div class="carousel-inner">
+    <div class="carousel-item left active">
+      <aside>
+        <img src="{{url_for('static', filename='images/banner 1 new.png')}}" alt="" class="carousel-image">
+        <!-- <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false"></svg> -->
+        <div class="container">
+          <div class="carousel-caption text-end" style="padding-bottom: 80px;">
+            <h1>Fan Favourite</h1>
+            <p>Get our Recommended Drink Combination!</p>
+            <!-- something is wrong with this button -->
+            <p><a class="btn btn-lg btn-primary" href="/menu">Learn more!</a></p>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <div class="carousel-item right">
+      <aside>
+        <img src="{{url_for('static', filename='images/banner2_copy.png')}}" alt="" class="carousel-image">
+        <!-- <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false"></svg> -->
+        <div class="container">
+          <div class="carousel-caption text-start" style="padding-bottom: 80px;">
+            <h1>Exam Chill Drinks</h1>
+            <p>Stress over exam! Don't worry we got you!</p>
+            <p><a class="btn btn-lg btn-primary" href="/menu">Student Seasonal Drinks</a></p>
+          </div>
+        </div>
+      </aside>
+    </div>
+    {% if current_user.is_authenticated %}
+    {% else %}
+    <div class="carousel-item">
+      <div class="row justify-content-center">
+        <img src="{{url_for('static', filename='images/logo-clear.png')}}" alt="" class="img-responsive"
+          style="width: 50% !important; height: auto;">
+      </div>
+      <div class="container">
+        <div class="carousel-caption">
+          <h1>Not a member yet?</h1>
+          <p>Enjoy deals and discount by signing up as a member at PyTea now!</p>
+          <p><a class="btn btn-lg btn-primary" href="/sign-up">Sign Up Today!</a></p>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#myCarousel" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#myCarousel" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
+
+
+<section class="about">
+  <div class="container">
+    <aside>
+      <img src="{{url_for('static', filename='images/about.jpg')}}" alt="" class="responsive">
+    </aside>
+
+    <article>
+      <h1 class="section-title">About PyTea</h1>
+      <p>
+        Hello there! PyTea is a local start up business by 3 Singaporean students who are bubble tea enthusiasts. The
+        name PyTea cleverly combines the word “Python” with “tea”, creating a playful and tech-inspired name for our
+        bubble tea shop. Additionally, our name also sounds like “buy tea” when you pronounce it.
+      </p>
+    </article>
+  </div>
+</section>
+
+<section class="ingredients">
+  <div class="container">
+    <h1 class="section-title">Our Drinks</h1>
+    <p>At PyTea, we believe that crafting the perfect bubble tea is an art form. Every drink we create is a masterpiece, carefully curated to provide you with an unforgettable taste experience. Our commitment to quality starts with the finest, freshest ingredients that nature has to offer.</p>
+    <img src="{{url_for('static', filename='images/step1.png')}}" alt="" class="responsive">
+    <img src="{{url_for('static', filename='images/step2.png')}}" alt="" class="responsive">
+    <img src="{{url_for('static', filename='images/step3.png')}}" alt="" class="responsive">
+    <img src="{{url_for('static', filename='images/step4.png')}}" alt="" class="responsive">
+    <img src="{{url_for('static', filename='images/step5.png')}}" alt="" class="responsive">
+  </div>
+</section>
+
+<section class="env">
+  <div class="container">
+    <h1 class="section-title">Our Environmental Stance</h1>
+    <p>At PyTea, we are committed to promoting sustainability and minimizing our environmental impact.
+      One of the ways we achieve this is by prioritizing the use of eco-friendly and recyclable materials for our bubble
+      tea cups.
+      By opting for these materials, we reduce the amount of waste that ends up in landfills and contribute to a more
+      circular economy. </p>
+    <p>Additionally, we have taken innovation a step further by incorporating insects into our special pearls.
+      This unique approach not only adds an extra protein boost to our beverages but also indirectly helps decrease
+      carbon emissions and water consumption.
+      By embracing alternative protein sources, we reduce the environmental footprint associated with traditional animal
+      agriculture.
+      We believe that our small changes can make a big difference, and are proud to offer environmentally conscious
+      options that contribute to a greener and more sustainable future.</p>
+  </div>
+</section>
+
+<section class="location" id="location">
+  <div class="container">
+    <aside>
+      <img src="{{url_for('static', filename='images/map.png')}}" alt="" class="responsive">
+    </aside>
+
+    <article>
+      <h1 class="section-title">Find us at our outlets!</h1>
+      <ul>
+        <li>53 Ang Mo Kio Avenue 3, #B2-57</li>
+        <li>100 Tampanies Avenue 9, #02-90</li>
+        <li>88 Bedok Avenue 1, #07-22</li>
+        <li>56 Novena Avenue 7, #B1-38</li>
+        <li>21 Toa Payoh Avenue 6, #01-42</li>
+        <li>36 Jurong Avenue 4, #01-23</li>
+      </ul>
+    </article>
+  </div>
+</section>
+
+{% endblock %}

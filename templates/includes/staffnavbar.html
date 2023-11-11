@@ -1,0 +1,270 @@
+  <style>
+    .nav-masthead .nav-link {
+    color: #808080;
+    background-color: transparent;
+    border-bottom: .23rem solid transparent;
+    padding-bottom: 3px;
+  }
+  
+  .nav-link{
+    bottom: -3px;
+  }
+  
+  
+  .nav-masthead .nav-link:hover,
+  .nav-masthead .nav-link:focus {
+    border-bottom-color: #f2e6da;
+  
+  }
+  
+  /* .nav-masthead .nav-link + .nav-link {
+    margin-left: 1rem;
+  } */
+  
+  .nav-masthead .active {
+    color: #000000;
+    /* border-bottom-color: #b87253; */
+  }
+  
+  /* .nav-link:hover::after,
+  .nav-link:active::after{
+      opacity: 1;
+  } */
+  
+  /* Icon 1 */
+  
+  .animated-icon1,
+  .animated-icon2,
+  .animated-icon3 {
+  width: 30px;
+  height: 20px;
+  position: relative;
+  margin: 0px;
+  -webkit-transform: rotate(0deg);
+  -moz-transform: rotate(0deg);
+  -o-transform: rotate(0deg);
+  transform: rotate(0deg);
+  -webkit-transition: .5s ease-in-out;
+  -moz-transition: .5s ease-in-out;
+  -o-transition: .5s ease-in-out;
+  transition: .5s ease-in-out;
+  cursor: pointer;
+  
+  }
+  
+  .animated-icon1 span,
+  .animated-icon2 span,
+  .animated-icon3 span {
+  display: block;
+  position: absolute;
+  height: 3px;
+  width: 100%;
+  border-radius: 9px;
+  opacity: 1;
+  left: 0;
+  -webkit-transform: rotate(0deg);
+  -moz-transform: rotate(0deg);
+  -o-transform: rotate(0deg);
+  transform: rotate(0deg);
+  -webkit-transition: .25s ease-in-out;
+  -moz-transition: .25s ease-in-out;
+  -o-transition: .25s ease-in-out;
+  transition: .25s ease-in-out;
+  }
+  
+  .animated-icon1 span {
+  background: #2d7ef7;
+  }
+  
+  .animated-icon2 span {
+  background: #e3f2fd;
+  }
+  
+  .animated-icon3 span {
+  background: #f3e5f5;
+  }
+  
+  .animated-icon1 span:nth-child(1) {
+  top: 0px;
+  }
+  
+  .animated-icon1 span:nth-child(2) {
+  top: 10px;
+  }
+  
+  .animated-icon1 span:nth-child(3) {
+  top: 20px;
+  }
+  
+  .animated-icon1.open span:nth-child(1) {
+  top: 11px;
+  -webkit-transform: rotate(135deg);
+  -moz-transform: rotate(135deg);
+  -o-transform: rotate(135deg);
+  transform: rotate(135deg);
+  }
+  
+  .animated-icon1.open span:nth-child(2) {
+  opacity: 0;
+  left: -60px;
+  }
+  
+  .animated-icon1.open span:nth-child(3) {
+  top: 11px;
+  -webkit-transform: rotate(-135deg);
+  -moz-transform: rotate(-135deg);
+  -o-transform: rotate(-135deg);
+  transform: rotate(-135deg);
+  }
+  
+  /* Icon 3*/
+  
+  .animated-icon2 span:nth-child(1) {
+  top: 0px;
+  }
+  
+  .animated-icon2 span:nth-child(2),
+  .animated-icon2 span:nth-child(3) {
+  top: 10px;
+  }
+  
+  .animated-icon2 span:nth-child(4) {
+  top: 20px;
+  }
+  
+  .animated-icon2.open span:nth-child(1) {
+  top: 11px;
+  width: 0%;
+  left: 50%;
+  }
+  
+  .animated-icon2.open span:nth-child(2) {
+  -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  -o-transform: rotate(45deg);
+  transform: rotate(45deg);
+  }
+  
+  .animated-icon2.open span:nth-child(3) {
+  -webkit-transform: rotate(-45deg);
+  -moz-transform: rotate(-45deg);
+  -o-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+  }
+  
+  .animated-icon2.open span:nth-child(4) {
+  top: 11px;
+  width: 0%;
+  left: 50%;
+  }
+  
+  /* Icon 4 */
+  .animated-icon3 span {
+  background: black;
+  }
+  
+  .navbar-light .navbar-toggler{
+  color: #ecdac7;
+  border-color: #ecdac7;
+  }
+  .animated-icon3 span:nth-child(1) {
+  top: 0px;
+  -webkit-transform-origin: left center;
+  -moz-transform-origin: left center;
+  -o-transform-origin: left center;
+  transform-origin: left center;
+  }
+  
+  .animated-icon3 span:nth-child(2) {
+  top: 10px;
+  -webkit-transform-origin: left center;
+  -moz-transform-origin: left center;
+  -o-transform-origin: left center;
+  transform-origin: left center;
+  }
+  
+  .animated-icon3 span:nth-child(3) {
+  top: 20px;
+  -webkit-transform-origin: left center;
+  -moz-transform-origin: left center;
+  -o-transform-origin: left center;
+  transform-origin: left center;
+  }
+  
+  .animated-icon3.open span:nth-child(1) {
+  -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  -o-transform: rotate(45deg);
+  transform: rotate(45deg);
+  top: 0px;
+  left: 8px;
+  }
+  
+  .animated-icon3.open span:nth-child(2) {
+  width: 0%;
+  opacity: 0;
+  }
+  
+  .animated-icon3.open span:nth-child(3) {
+  -webkit-transform: rotate(-45deg);
+  -moz-transform: rotate(-45deg);
+  -o-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+  top: 21px;
+  left: 8px;
+  }
+  </style>
+  
+  
+  <nav class="navbar fixed-top navbar-expand-lg" style="background-color: #eddfc7">
+    <div class="container-fluid">
+      <a class="d-flex align-items-center mt-lg-0 mb-1 mb-lg-0 m-2 text-white text-decoration-none" href="/staff">
+              <img src="{{url_for('static', filename='images/logo-clear.png')}}"  width="95" height="45"  alt="">
+              <!-- <span class="fs-4">PyTea</span> -->
+      </a>
+      <!-- Hamburger Cross Responsive -->
+      <button class="navbar-toggler third-button" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false"
+            aria-label="Toggle navigation">
+            <div class="animated-icon3">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="nav col-12 col-lg-auto me-lg-auto justify-content-center nav nav-masthead justify-content-center float-md-end">
+            <li class="mb-md-0"><a href="/staff" class="nav-link active" aria-current="page">Home</a></li>
+            <!-- <li class="nav-item dropdown mb-md-0">
+              <a class="nav-link dropdown-toggle" href="/menu" id="navbardrop" data-toggle="dropdown">
+                Menu
+              </a>
+              <div class="dropdown-menu">
+                <a class="dropdown-item" href="/product">Product</a>
+              </div>
+            </li> -->
+            <li class="mb-md-0"><a href="/staff/users" class="nav-link">User</a></li>
+            <li class="mb-md-0"><a href="/staff/inventory" class="nav-link">Inventory</a></li>
+            <li class="mb-md-0"><a href="/staff/feedback" class="nav-link">Feedback</a></li>
+            <li class="mb-md-0"><a href="/staff/dashboard"  target="_blank" class="nav-link">Dashboard</a></li>
+            
+          </ul>
+  
+          <div class="text-end">
+            <a href="/staff/user-settings"><img src="{{url_for('static', filename='icons/user.png')}}" width="30" height="25"  alt=""></a>
+            <style>
+              .btn {
+                color: black;
+              }
+              .btn:hover {
+                color: #fff;
+                background-color: #b87253;
+                border-color: #b87253;
+                transition: all .7s;
+              }
+            </style>
+          </div>
+      </div>
+    </div>
+  </nav>

@@ -1,0 +1,134 @@
+{
+  "intents": [
+    {
+      "tag": "greeting",
+      "patterns": [
+        "Hi",
+        "Hey",
+        "How are you",
+        "Is anyone there?",
+        "Hello",
+        "Good day"
+      ],
+      "responses": [
+        "Hello, thanks for visiting. Welcome to Pytea Bubble tea shop. How can we assist you?",
+        "Hi there, welcome to Pytea Bubble tea shop. How can we assist you?"
+      ]
+    },
+    {
+      "tag": "goodbye",
+      "patterns": ["Bye", "See you later", "Goodbye"],
+      "responses": [
+        "See you later, thanks for visiting",
+        "Have a nice day",
+        "Bye! Come back again soon."
+      ]
+    },
+    {
+      "tag": "thanks",
+      "patterns": ["Thanks", "Thank you", "That's helpful", "Thank's a lot!"],
+      "responses": ["Happy to help!", "Any time!", "My pleasure"]
+    },
+    {
+      "tag": "items",
+      "patterns": [
+        "Which drinks do you have?",
+        "What kinds of items are there?",
+        "What do you sell?"
+      ],
+      "responses": [
+        "We sell organic and healthy bubble tea."
+      ]
+    },    {
+      "tag": "recommend",
+      "patterns": [
+        "What do you recommend?",
+        "What drink is nice?",
+        "What should I get?",
+        "Favorite drink"
+      ],
+      "responses": [
+        "Our most popular drink is classic fruit tea with our signature protein pearl. Check out our menu for an excellent series of drinks!",
+        "Try our special relax unsweeten shiok summer tea, for a refreshing stress reliever!"
+      ]
+    },
+    {
+      "tag": "payments",
+      "patterns": [
+        "Do you take credit cards?",
+        "Do you accept Mastercard?",
+        "Can I pay with Paypal?",
+        "Can I pay with Paynow?",
+        "Do you accpet Singtel Dash",
+        "Are you cash only?"
+      ],
+      "responses": [
+        "We accept VISA, Mastercard , Paynow, Paylah and Singtel Dash.We also allow you to order first and pay at the counter later.",
+        "We accept most major credit cards and debit card. We also allow you to order first and pay at the counter later."
+      ]
+    },
+    {
+      "tag": "delivery",
+      "patterns": [
+        "How long does delivery take?",
+        "How long does shipping take?",
+        "When do I get my delivery?",
+        "Do you do delivery?"
+      ],
+      "responses": [
+        "Delivery is on the day itself. We would recommend for large orders to be place 1-2 days before.",
+        "Shipping is on the day itself. We would recommend for large orders to be place 1-2 days before."
+      ]
+    },
+    {
+      "tag": "toppings",
+      "patterns": [
+        "What toppings do you have?",
+        "Toppings you sell?",
+        "What topping do you recommend?"
+      ],
+      "responses": [
+        "Our top topping is our signature protein pearl, which comes with a sweat and nutrious flavour. We also sell the classic black pearl, jelly and pudding."
+      ]
+    },
+    {
+      "tag": "environmental",
+      "patterns": [
+        "Are you an environmental company?",
+        "Is there any environmental things you do?",
+        "Environmental Sustainability"
+      ],
+      "responses": [
+        "Our company uses only the most eco-friendly biodigradable cups and straw to ensure that we do not contribute to both plastic and paper waste."
+      ]
+    },
+
+
+    {
+      "tag": "funny",
+      "patterns": [
+        "Tell me a joke!",
+        "Tell me something funny!",
+        "Do you know a joke?",
+        "joke",
+        "another joke"
+      ],
+      "responses": [
+        "Why did the hipster burn his mouth? He drank the coffee before it was cool.",
+        "What did the buffalo say when his son left for college? Bison.",
+        "Why did amber go home? Because she got her tea.HAHAAH"
+      ]
+    },
+    {
+      "tag": "staff",
+      "patterns": [
+        "Do you have a staff called amber?",
+        "Does Javerine work here?",
+        "Who is natelie?"
+      ],
+      "responses": [
+        "That is our staff member."
+      ]
+    }
+  ]
+}

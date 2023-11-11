@@ -1,0 +1,290 @@
+{% extends "base.html" %}
+{% block title %} Staff PyTea - Stock Inventory{% endblock %}
+
+{% block content %}
+{% from "includes/form_helper.html" import render_field %}
+<script>
+  nav = document.getElementsByClassName("nav-link");
+  nav[0].classList.remove("active");
+  nav[1].classList.remove("active");
+  nav[2].classList.add("active");
+  nav[3].classList.remove("active");
+</script>
+<style>
+  .nav-link{
+    color: #808080;
+  }
+  .nav-link:hover, .nav-link active{
+    color: black;
+  }
+  .header {
+    padding: 3rem 1.5rem;
+    text-align: center;
+  }
+  .lead{
+      font-size: 1.25rem;
+      font-weight: 300;
+  }
+  
+</style>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+   {% if messages %}
+      {% for category, message in messages %}
+      {% if category == 'success' %}
+      <div class="alert alert-success alter-dismissable fade show" role="alert">
+        {{ message }}
+        <button class="close" data-dismiss="alert">
+         <!-- fix this x button -->
+         <span aria-hidden="true" style="font-size: 20px; margin-left: 10px;">&times;</span>
+        </button>
+     </div>
+      {% else %}
+      <div class="alert alert-danger alter-dismissable fade show" role="alert">
+         {{ message }}
+         <button class="close" data-dismiss="alert">
+          <!-- fix this x button -->
+          <span aria-hidden="true" style="font-size: 20px; margin-left: 10px;">&times;</span>
+         </button>
+      </div>
+      {% endif %}
+      {% endfor %}
+   {% endif %}
+{% endwith %}
+
+<div class="header">
+  <h1>Inventory</h1>
+</div>
+<main class="container mt-3 mx-auto">
+    <div>
+      <table class="table table-striped">
+        <thead>
+        <tr>
+          <th>Product</th>
+          <th>Stocks Left</th>
+          <th>Restocked</th>
+        </tr>
+        </thead>
+        <tbody>
+          <tr{% if inventory.get_cup() <= 10 %} class="table-danger"
+          {% elif inventory.get_cup() <= 15 %} class="table-warning"
+          {% endif %} >
+            <td>Cups</td>
+            <td>{{ inventory.get_cup() }}</td>
+            <td><form action="{{url_for('staff.restock', id=1)}}" method="POST">
+                <button type="button" class="btn btn-primary mr-3" data-toggle="modal" data-target="#cup">Restocked</button>
+                    <!-- The Modal -->
+                    <div class="modal" id="cup">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+              
+                         <!-- Modal Header -->
+                         <div class="modal-header">
+                            <h4 class="modal-title">Restocked Cups</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                          </div>
+                          <div class="modal-body">
+                            
+                            <input type="number" class="form-control" id="cup" name="cup" required>
+
+                          </div>
+              
+                          <!-- Modal footer -->
+                          <div class="modal-footer">
+                            <input type="submit" value="Ok" class="btn btn-primary">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                          </div>
+              
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                </td>
+          </tr>
+
+          <tr {% if inventory.get_milk() <= 10 %} class="table-danger"
+          {% elif inventory.get_milk() <= 15 %} class="table-warning"
+          {% endif %} >
+            <td>Milk</td>
+            <td>{{ inventory.get_milk() }}</td>
+            <td><form action="{{url_for('staff.restock', id=2)}}" method="POST">
+                <button type="button" class="btn btn-primary mr-3" data-toggle="modal" data-target="#milk">Restocked</button>
+                    <!-- The Modal -->
+                    <div class="modal" id="milk">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+              
+                          <!-- Modal Header -->
+                          <div class="modal-header">
+                            <h4 class="modal-title">Restocked Milk</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                          </div>
+                          <div class="modal-body">
+                            
+                            <input type="number" class="form-control" id="milk" name="milk" required>
+
+                          </div>
+              
+                          <!-- Modal footer -->
+                          <div class="modal-footer">
+                            <input type="submit" value="Ok" class="btn btn-primary">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                </td>
+          </tr>
+
+          <tr {% if inventory.get_tea() <= 10 %} class="table-danger"
+          {% elif inventory.get_tea() <= 15 %} class="table-warning"
+          {% endif %} >
+            <td>Tea</td>
+            <td>{{ inventory.get_tea() }}</td>
+            <td>
+                <form action="{{url_for('staff.restock', id=3)}}" method="POST">
+                    <button type="button" class="btn btn-primary mr-3" data-toggle="modal" data-target="#tea">Restocked</button>
+                        <!-- The Modal -->
+                        <div class="modal" id="tea">
+                          <div class="modal-dialog">
+                            <div class="modal-content">
+                  
+                             <!-- Modal Header -->
+                          <div class="modal-header">
+                            <h4 class="modal-title">Restocked Tea</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                          </div>
+                          <div class="modal-body">
+                            
+                            <input type="number" class="form-control" id="tea" name="tea" required>
+
+                          </div>
+              
+                          <!-- Modal footer -->
+                          <div class="modal-footer">
+                            <input type="submit" value="Ok" class="btn btn-primary">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                          </div>
+                  
+                            </div>
+                          </div>
+                        </div>
+                      </form>
+            </td>
+          </tr>
+
+          <tr {% if inventory.get_signature_pearls() <= 10 %} class="table-danger"
+          {% elif inventory.get_signature_pearls() <= 15 %} class="table-warning"
+          {% endif %}>
+            <td>Signature Pearls</td>
+            <td>{{ inventory.get_signature_pearls() }}</td>
+            <td>
+                <form action="{{url_for('staff.restock', id=4)}}" method="POST">
+                    <button type="button" class="btn btn-primary mr-3" data-toggle="modal" data-target="#spearls">Restocked</button>
+                        <!-- The Modal -->
+                        <div class="modal" id="spearls">
+                          <div class="modal-dialog">
+                            <div class="modal-content">
+                  
+                             <!-- Modal Header -->
+                          <div class="modal-header">
+                            <h4 class="modal-title">Restocked Signature Pearls</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                          </div>
+                          <div class="modal-body">
+                            
+                            <input type="number" class="form-control" id="signature_pearls" name="signature_pearls" required>
+
+                          </div>
+              
+                          <!-- Modal footer -->
+                          <div class="modal-footer">
+                            <input type="submit" value="Ok" class="btn btn-primary">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                          </div>
+                  
+                            </div>
+                          </div>
+                        </div>
+                      </form>
+            </td>
+          </tr>
+
+          <tr {% if inventory.get_bubble() <= 10 %} class="table-danger"
+          {% elif inventory.get_bubble() <= 15 %} class="table-warning"
+          {% endif %} >
+            <td>Bubbles</td>
+            <td>{{ inventory.get_bubble() }}</td>
+            <td><form action="{{url_for('staff.restock', id=5)}}" method="POST">
+                <button type="button" class="btn btn-primary mr-3" data-toggle="modal" data-target="#bubble">Restocked</button>
+                    <!-- The Modal -->
+                    <div class="modal" id="bubble">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+              
+                          <!-- Modal Header -->
+                          <div class="modal-header">
+                            <h4 class="modal-title">Restocked Bubbles</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                          </div>
+                          <div class="modal-body">
+                            
+                            <input type="number" class="form-control" id="bubble" name="bubble" required>
+
+                          </div>
+              
+                          <!-- Modal footer -->
+                          <div class="modal-footer">
+                            <input type="submit" value="Ok" class="btn btn-primary">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                          </div>
+              
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                </td>
+          </tr>
+
+          <tr {% if inventory.get_jelly() <= 10 %} class="table-danger"
+          {% elif inventory.get_jelly() <= 15 %} class="table-warning"
+          {% endif %} >
+            <td>Jelly</td>
+            <td>{{ inventory.get_jelly() }}</td>
+            <td><form action="{{url_for('staff.restock', id=6)}}" method="POST">
+                <button type="button" class="btn btn-primary mr-3" data-toggle="modal" data-target="#jelly">Restocked</button>
+                    <!-- The Modal -->
+                    <div class="modal" id="jelly">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+              
+                          <!-- Modal Header -->
+                          <div class="modal-header">
+                            <h4 class="modal-title">Restocked Jelly</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                          </div>
+                          <div class="modal-body">
+                            
+                            <input type="number" class="form-control" id="jelly" name="jelly" required>
+
+                          </div>
+              
+                          <!-- Modal footer -->
+                          <div class="modal-footer">
+                            <input type="submit" value="Ok" class="btn btn-primary">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                          </div>
+              
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                </td>
+          </tr>
+
+        </tbody>
+      </table>
+    </div>
+  </main>
+{% endblock %}

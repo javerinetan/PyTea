@@ -1,0 +1,409 @@
+{% extends "base.html" %}
+{% block title %} Staff PyTea - Dashboard{% endblock %}
+{% block head %}
+{% endblock %}
+{% block navbar %}{% endblock %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible"
+		content="IE=edge">
+	<meta name="viewport"
+		content="width=device-width,
+				initial-scale=1.0">
+	<link rel="stylesheet" href="/static/css/styledashboard.css">
+	<link rel="stylesheet" href="/static/css/responsive.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style type="text/css">/* Chart.js */
+@-webkit-keyframes chartjs-render-animation{from{opacity:0.99}to{opacity:1}}@keyframes chartjs-render-animation{from{opacity:0.99}to{opacity:1}}.chartjs-render-monitor{-webkit-animation:chartjs-render-animation 0.001s;animation:chartjs-render-animation 0.001s;}</style>
+</head>
+
+<body>
+    <div class="container" id="top">
+        <header>
+            <img class="logo" src="/static/images/logo-clear.png" style="padding-right: 20px; margin-left: 20px;" alt="pytea">
+            <div class="header-nav">
+                <div class="notification">
+                    <img class="bell" id="js-bell" src="/static/icons/icon-bell.png" alt="bell">
+                    <p class="badge" id="badge-1"><strong class="badge-num">1</strong></p>
+                    <p class="badge" id="badge-2"><strong class="badge-num">2</strong></p>
+                    <p class="badge" id="badge-3"><strong class="badge-num">3</strong></p>
+                    <p class="badge" id="badge-4"><strong class="badge-num">4</strong></p>
+                    <ul class="notification-menu" id="notif-menu" style="display: none;">
+                        <li id="header-li"><strong>Notifications</strong></li>
+                        <li class="popuptext" id="li-1">
+                            <img class="img" src="/static/images/hyunjin.png" alt="member image">
+                            <h3 class="name">Hyunjin</h3>
+                            <p class="comment">Just completed one order</p>
+                            <button class="btn-notif" type="button" name="delete">X</button>
+                        </li>
+                        <li class="popuptext" id="li-2">
+                            <img class="img" src="/static/images/yuqi.png" alt="member image">
+                            <h3 class="name">Yu Qi</h3>
+                            <p class="comment">Requires manager assistance on case #3457</p>
+                            <button class="btn-notif" type="button" name="delete">X</button>
+                        </li>
+                        <li class="popuptext" id="li-3">
+                            <img class="img" src="/static/images/mark.png" alt="member image">
+                            <h3 class="name">Mark Zuckerberg</h3>
+                            <p class="comment">Stock Lock! Urgent Restock at branch Jurong!</p>
+                            <button class="btn-notif" type="button" name="delete">X</button>
+                        </li>
+                        <li class="popuptext" id="li-4">
+                            <img class="img" src="/static/images/elon.png" alt="member image">
+                            <h3 class="name">Elon Mask</h3>
+                            <p class="comment">New staff member just joined</p>
+                            <button class="btn-notif" type="button" name="delete">X</button>
+                        </li>
+                        <li class="popuptext popupalert" id="alert-bell" style="display: none;">
+                            <h3>No new notifications</h3>
+                        </li>
+                    </ul>
+                    <script>
+                        // Example event listener for the notification button
+                        const notificationButton = document.getElementById('js-bell');
+                        const notificationMenu = document.getElementById('notif-menu');
+
+                        // Keep track of the menu's state (visible or hidden)
+                        let isMenuVisible = false;
+
+                        notificationButton.addEventListener('click', () => {
+                          // Toggle the display of the notification menu based on its current state
+                          if (isMenuVisible) {
+                            // If the menu is currently visible, hide it
+                            notificationMenu.style.display = 'none';
+                            isMenuVisible = false;
+                          } else {
+                            // If the menu is currently hidden, show it
+                            notificationMenu.style.display = 'block';
+                            isMenuVisible = true;
+                          }
+                        });
+                    </script>
+                </div>
+                <span class="border-notif"></span>
+                <img class="profile-pic" src="/static/images/josh.png" alt="User Avatar">
+                <h3 class="profile-name">Staff</h3>
+            </div>
+        </header>
+        <nav>
+            <div class="side-nav" id="js-nav">
+                <a href="#top" class="nav-icons nav-selected" id="btn-top"><img src="/static/icons/dashboard.png" height="25px" width="25px" alt="dashboard"></a>
+                <a href="#traffic" class="nav-icons" id="btn-traffic"><img src="/static/icons/vists.png" height="35px" width="30px" alt="visits"></a>
+                <a href="#activity" class="nav-icons" id="btn-activity"><img src="/static/icons/members.png" height="30px" width="30px" alt="members"></a>
+                <a href="#settings" class="nav-icons" id="btn-settings"><img src="/static/icons/settings.png" height="30px" width="30px" alt="settings"></a>
+            </div>
+        </nav>
+        <main class="grid-main">
+
+            <div class="grid-1">
+                <div class="dashboard-flex">
+                    <h2 class="dashboard">Dashboard</h2>
+                    <form class="search-border" action="index.html" method="POST">
+                        <input type="search" class="search-top" id="search-top" placeholder="Search">
+                    </form>
+                </div>
+            </div>
+
+            <div class="grid-2" id="Sales">
+                <h3>Sales</h3>
+                <ul class="btn-chart">
+                    <li class="li" id="hour">Hourly</li>
+                    <li class="li" id="day">Daily</li>
+                    <li class="li" id="week">Weekly</li>
+                    <li class="li" id="month">Monthly</li>
+                </ul>
+                <div class="chart-1" style="position: relative; height:221px; width:979px">
+                    <canvas id="lineChart"></canvas>
+                </div>
+            </div>
+            <script>
+        // Sample data for the line chart (replace with your own data)
+        const lineData = {
+            labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+            datasets: [{
+                label: 'Sales',
+                data: [100, 80, 120, 90, 140, 110, 160],
+                backgroundColor: '#d1a97c',
+                borderColor: '#d1a97c',
+                borderWidth: 2,
+                pointRadius: 4,
+                pointBackgroundColor: '#d1a97c',
+            }]
+        };
+
+        // Chart options
+        const lineOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            },
+            legend: {
+                display: false,
+            },
+        };
+
+        // Get the canvas element and create the line chart
+        const lineCanvas = document.getElementById('lineChart');
+        const lineChart = new Chart(lineCanvas, {
+            type: 'line',
+            data: lineData,
+            options: lineOptions
+        });
+
+        // You can add event listeners to the buttons to change the chart data based on the selected option (e.g., hourly, daily, etc.).
+        const btns = document.querySelectorAll('.btn-chart li');
+        btns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Your logic to update the chart data here
+                // For example, you can update the lineData.labels and lineData.datasets[0].data arrays based on the selected option.
+                // Then, call lineChart.update() to refresh the chart with the new data.
+            });
+        });
+    </script>
+
+            <div class="grid-3">
+                <h3>DAILY TRAFFIC</h3>
+                <div class="chart-2" style="position: relative; height:221px; width:979px">
+                    <canvas id="barChart"></canvas>
+                </div>
+            </div>
+            <script>
+        // Sample data for the bar chart
+        const barData = {
+            labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+            datasets: [{
+                label: 'Traffic',
+                data: [120, 80, 150, 100, 200, 180, 90],
+                backgroundColor: '#d1a97c',
+                borderWidth: 1,
+            }]
+        };
+
+        // Chart options
+        const barOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            },
+            legend: {
+                display: false,
+            },
+        };
+
+        // Get the canvas element and create the bar chart
+        const barCanvas = document.getElementById('barChart');
+        const barChart = new Chart(barCanvas, {
+            type: 'bar',
+            data: barData,
+            options: barOptions
+        });
+    </script>
+
+                <div class="grid-4">
+        <h3>MOBILE USERS</h3>
+        <div class="chart-3" style="position: relative; height: 221px; width: 979px;">
+            <canvas id="doughnutChart"></canvas>
+        </div>
+    </div>
+
+    <script>
+        // Sample data for the doughnut chart
+        const doughnutData = {
+            labels: ['Android', 'iOS', 'Others'],
+            datasets: [{
+                data: [45, 35, 20],
+                backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
+                borderWidth: 1,
+            }]
+        };
+
+        // Chart options
+        const doughnutOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            legend: {
+                position: 'bottom',
+            },
+        };
+
+        // Get the canvas element and create the doughnut chart
+        const doughnutCanvas = document.getElementById('doughnutChart');
+        const doughnutChart = new Chart(doughnutCanvas, {
+            type: 'doughnut',
+            data: doughnutData,
+            options: doughnutOptions
+        });
+    </script>
+
+            <div class="grid-5">
+                <h3>SOCIAL STATS</h3>
+                <div class="widgets">
+                    <div class="social-info">
+                        <svg class="social-icons" version="1.1" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="-20 -2 70 30" x="0px" y="0px">
+                            <circle cx="15" cy="13" r="30.180" fill="#7377bf"></circle>
+                            <path fill="#fff" d="M32,3.1c-1.2,0.5-2.4,0.9-3.8,1c1.4-0.8,2.4-2.1,2.9-3.6c-1.3,0.8-2.7,1.3-4.2,1.6C25.8,0.8,24,0,22.2,0
+	                      c-3.6,0-6.6,2.9-6.6,6.6c0,0.5,0.1,1,0.2,1.5C10.3,7.8,5.5,5.2,2.2,1.2c-0.6,1-0.9,2.1-0.9,3.3c0,2.3,1.2,4.3,2.9,5.5
+	                      c-1.1,0-2.1-0.3-3-0.8c0,0,0,0.1,0,0.1c0,3.2,2.3,5.8,5.3,6.4c-0.6,0.1-1.1,0.2-1.7,0.2c-0.4,0-0.8,0-1.2-0.1
+	                      c0.8,2.6,3.3,4.5,6.1,4.6c-2.2,1.8-5.1,2.8-8.2,2.8c-0.5,0-1.1,0-1.6-0.1c2.9,1.9,6.4,3,10.1,3c12.1,0,18.7-10,18.7-18.7
+	                      c0-0.3,0-0.6,0-0.8C30,5.6,31.1,4.4,32,3.1z"></path>
+                        </svg>
+                        <h2 class="widget-label">Twitter</h2>
+                        <p class="widget-stats">10,345</p>
+                    </div>
+                    <div class="social-info">
+                        <svg class="social-icons" version="1.1" viewBox="-18 15 95 30" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px">
+                            <circle cx="30" cy="30" r="40.960" fill="#7377bf"></circle>
+                            <path fill="#fff" d="M40.43,21.739h-7.645v-5.014c0-1.883,1.248-2.322,2.127-2.322c0.877,0,5.395,0,5.395,0V6.125l-7.43-0.029
+                           c-8.248,0-10.125,6.174-10.125,10.125v5.518h-4.77v8.53h4.77c0,10.947,0,24.137,0,24.137h10.033c0,0,0-13.32,0-24.137h6.77
+                           L40.43,21.739z"></path>
+                        </svg>
+                        <h2 class="widget-label">Facebook</h2>
+                        <p class="widget-stats">8,739</p>
+                    </div>
+                   <div class="social-info">
+                    <svg class="social-icons" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="-18 0 65 30" style="enable-background:new 0 0 32 32;" xml:space="preserve">
+                        <circle cx="15" cy="15" r="28.017" fill="#7377bf"></circle>
+                        <path fill="#fff" d="M17.7,25.7c0-0.3,0-0.5-0.1-0.8c-0.1-0.2-0.1-0.5-0.2-0.7c-0.1-0.2-0.2-0.4-0.3-0.7c-0.2-0.2-0.3-0.4-0.4-0.6
+	                       c-0.1-0.2-0.3-0.3-0.5-0.6c-0.2-0.2-0.4-0.4-0.5-0.5c-0.1-0.1-0.3-0.3-0.6-0.5c-0.3-0.2-0.5-0.4-0.6-0.4s-0.3-0.2-0.6-0.4
+	                       c-0.3-0.2-0.5-0.4-0.6-0.4c-0.2,0-0.5,0-1,0c-0.7,0-1.4,0-2,0.1c-0.7,0.1-1.4,0.2-2.1,0.5c-0.7,0.2-1.3,0.5-1.9,0.9s-1,0.8-1.3,1.4
+	                       c-0.3,0.6-0.5,1.3-0.5,2.1c0,0.9,0.2,1.7,0.7,2.3c0.5,0.7,1.1,1.2,1.8,1.6s1.5,0.7,2.3,0.9s1.6,0.3,2.4,0.3c0.8,0,1.5-0.1,2.2-0.2
+	                       c0.7-0.2,1.3-0.4,1.9-0.8c0.6-0.3,1.1-0.8,1.4-1.4C17.5,27.2,17.7,26.5,17.7,25.7z M15.4,9.1c0-0.8-0.1-1.6-0.3-2.5
+	                       c-0.2-0.9-0.5-1.7-0.9-2.5c-0.4-0.8-0.9-1.5-1.6-2c-0.7-0.5-1.5-0.8-2.3-0.8c-1.2,0-2.1,0.4-2.8,1.3c-0.7,0.9-1,1.9-1,3.2
+	                       c0,0.6,0.1,1.2,0.2,1.9c0.1,0.7,0.4,1.3,0.7,2c0.3,0.7,0.7,1.3,1.1,1.8c0.4,0.5,0.9,1,1.5,1.3c0.6,0.3,1.2,0.5,1.9,0.5
+	                       c1.2,0,2.1-0.4,2.7-1.2C15.1,11.4,15.4,10.4,15.4,9.1z M12.9,0h8.4l-2.6,1.5h-2.6c0.9,0.6,1.6,1.4,2.1,2.4s0.8,2.1,0.8,3.2
+	                       c0,0.9-0.1,1.8-0.4,2.5c-0.3,0.7-0.7,1.3-1.1,1.8c-0.4,0.4-0.8,0.9-1.3,1.2c-0.4,0.4-0.8,0.8-1.1,1.2c-0.3,0.4-0.4,0.8-0.4,1.3
+	                       c0,0.3,0.1,0.7,0.3,1c0.2,0.3,0.5,0.6,0.8,0.9c0.3,0.3,0.7,0.6,1.1,0.9c0.4,0.3,0.8,0.7,1.2,1.1c0.4,0.4,0.8,0.8,1.1,1.3
+	                       c0.3,0.5,0.6,1,0.8,1.6c0.2,0.6,0.3,1.3,0.3,2c0,2.1-0.9,3.9-2.7,5.4c-1.9,1.7-4.6,2.5-8.1,2.5c-0.8,0-1.5-0.1-2.3-0.2
+	                       c-0.8-0.1-1.6-0.3-2.3-0.6c-0.8-0.3-1.5-0.7-2.1-1.1c-0.6-0.4-1.1-1-1.5-1.7C1,27.6,0.8,26.9,0.8,26c0-0.8,0.2-1.6,0.7-2.6
+	                       c0.4-0.8,1-1.5,1.8-2.1c0.8-0.6,1.8-1.1,2.8-1.4c1-0.3,2-0.5,3-0.7c0.9-0.1,1.9-0.2,2.9-0.3c-0.8-1.1-1.2-2-1.2-2.9
+	                       c0-0.2,0-0.3,0-0.5c0-0.1,0.1-0.3,0.1-0.4c0-0.1,0.1-0.2,0.2-0.4c0.1-0.2,0.1-0.3,0.1-0.4c-0.5,0.1-1,0.1-1.3,0.1
+	                       c-1.9,0-3.5-0.6-4.9-1.9c-1.4-1.3-2-2.8-2-4.7c0-1.8,0.6-3.4,1.8-4.8C6,1.7,7.5,0.8,9.3,0.4C10.5,0.1,11.7,0,12.9,0z M32.8,4.9v2.5
+	                       h-4.9v4.9h-2.5V7.4h-4.9V4.9h4.9V0h2.5v4.9H32.8z"></path>
+                    </svg>
+                    <h2 class="widget-label">Google+</h2>
+                    <p class="widget-stats">2,530</p>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="grid-6" id="activity">
+                <h3>NEW MEMBERS</h3>
+                <div class="members-grid">
+                    <img class="member-img" src="/static/images/hyunjin.png" alt="Member Avatar">
+                    <h3 class="member-name">Hyunjin Hwang</h3>
+                    <a class="member-mail">Hyunjin@jyp_staff.com</a>
+                    <p class="member-date">11/01/19</p>
+                </div>
+                <div class="members-grid">
+                    <img class="member-img" src="/static/images/yuqi.png" alt="Member Avatar">
+                    <h3 class="member-name">Yu Qi</h3>
+                    <a class="member-mail">yuqi@cubenet.com.</a>
+                    <p class="member-date">10/01/19</p>
+                </div>
+                <div class="members-grid">
+                    <img class="member-img" src="/static/images/mark.png" alt="Member Avatar">
+                    <h3 class="member-name">Mark Zuckerberg</h3>
+                    <a class="member-mail">MarkZuckerberg@facebook.com</a>
+                    <p class="member-date">10/01/19</p>
+                </div>
+                <div class="members-grid">
+                    <img class="member-img" src="/static/images/elon.png" alt="Member Avatar">
+                    <h3 class="member-name">Elon Musk</h3>
+                    <a class="member-mail">ElonMuskxx12@x.com</a>
+                    <p class="member-date">10/01/19</p>
+                </div>
+
+            </div>
+
+            <div class="grid-7">
+                <h3>RECENT ACTIVITY</h3>
+                <div class="activity-grid">
+                    <img class="member-img" src="/static/images/member-1.jpg" alt="Member Avatar">
+                    <p class="member-comment">Made a feedback</p>
+                    <h3 class="member-time">4 hours ago</h3>
+                    <p class="sign">&gt;</p>
+                </div>
+                <div class="activity-grid">
+                    <img class="member-img" src="/static/images/member-2.jpg" alt="Member Avatar">
+                    <p class="member-comment">Bought a drink</p>
+                    <h3 class="member-time">5 hours ago</h3>
+                    <p class="sign">&gt;</p>
+                </div>
+                <div class="activity-grid">
+                    <img class="member-img" src="/static/images/member-3.jpg" alt="Member Avatar">
+                    <p class="member-comment">Bought a drink</p>
+                    <h3 class="member-time">5 hours ago</h3>
+                    <p class="sign">&gt;</p>
+                </div>
+                <div class="activity-grid">
+                    <img class="member-img" src="/static/images/member-4.jpg" alt="Member Avatar">
+                    <p class="member-comment">Bought a drink</p>
+                    <h3 class="member-time">1 day ago</h3>
+                    <p class="sign">&gt;</p>
+                </div>
+
+            </div>
+
+            <div class="grid-8">
+                <h3>MESSAGE USER</h3>
+                <form autocomplete="off" class="message-form" action="index.html" method="POST">
+                <div class="autocomplete">
+                    <input type="search" class="search-bottom" id="js-search-bottom" placeholder="Search for User">
+                </div>
+                    <textarea class="textarea" id="js-textarea" name="textarea" placeholder="Message User"></textarea>
+                    <button class="btn-send" id="js-send" type="button" name="send">SEND</button>
+                </form>
+            </div>
+
+            <div class="grid-9" id="settings">
+                <h3>SETTINGS</h3>
+                <form class="settings-form" action="index.html" method="POST">
+                    <p class="switch-1-text"> Send Email Notifications</p>
+                    <label class="switch switch-1">
+                        <input type="checkbox" id="checkbox1">
+                        <span class="slider round"></span>
+                      </label>
+                    <p class="switch-2-text"> Set Profile to Public</p>
+                    <label class="switch switch-2">
+                        <input type="checkbox" id="checkbox2" checked="">
+                        <span class="slider round"></span>
+                      </label>
+                    <select class="timezone" name="timezone" id="js-timezone">
+                        <option value="" disabled="" selected="">Select Timezone</option>
+                        <option id="option1">Northern Hemisphere</option>
+                        <option id="option2">Southern Hemisphere</option>
+                        <option id="option3">Eastern Hemisphere</option>
+                        <option id="option4">Western Hemisphere</option>
+                    </select>
+                    <button class="btn-save" id="js-save" type="button" value="save" onclick="save()">SAVE</button>
+                    <button class="btn-cancel" type="button" onclick="cancel()">CANCEL</button>
+                </form>
+            </div>
+            <footer class="grid-10">
+                <p>Developed by Javerine</p>
+            </footer>
+        </main>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.bundle.min.js"></script>
+    <script src="./index.js"></script>
+
+
+</body>
+
+</html>
+
+
+{% endblock %}
+{% block footer %}
+{% endblock %}

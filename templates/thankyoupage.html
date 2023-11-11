@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %} PyTea - Submitted {% endblock %}
+
+
+{% block content %}
+<script>
+    nav = document.getElementsByClassName("nav-link");
+    nav[0].classList.remove("active");
+    nav[1].classList.remove("active");
+    nav[2].classList.add("active");
+    nav[3].classList.remove("active")
+</script>
+<style>
+    .header {
+        padding: 7rem 1.5rem;
+        text-align: center;
+    }
+    .lead{
+        font-size: 1.25rem;
+        font-weight: 300;
+    }
+    .verified {
+        margin-top: 1rem;
+    }
+
+</style>
+<main class="container">
+    <div class="header">
+        <img src="{{url_for('static', filename='images/verifiedtick.png')}}" alt="" class="responsive" id="verified">
+        <br/>
+        <h1 class="verified" >Thank you!</h1>
+            <p class="lead">
+                Thank you for submitting your feedback. All data will be kept strictly confidential. We will get back to you if you have any enquires, via email
+            </p>
+<!--            <small>Please confirm your information</small>-->
+<!--            <br/>-->
+<!--        {{ first_name }}-->
+<!--        {{last_name }}-->
+<!--        {{ email }}-->
+<!--        {{ saluation }}-->
+<!--        {{ comment }}-->
+    </div>
+</main>
+{% endblock %}

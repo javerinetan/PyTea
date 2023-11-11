@@ -1,0 +1,124 @@
+.about{
+    margin: 100px 100px 0px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.about .section-title{
+    padding-bottom: 20px;
+}
+
+.about .container{
+    height: 300px;
+}
+
+.about article{
+    float: right;
+    width: 50%;  
+    padding-right: 30px;
+    padding-left: 50px;
+}
+
+.about aside{
+    float: left;
+    width: 50%;
+    display:flex;
+    justify-content: right;
+}
+
+.about img{
+    width:80%;
+}
+
+/* Ingredients */
+.ingredients {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 120px; /* Adjust the top margin if needed */
+}
+
+.ingredients .container {
+    height: 400px;
+}
+
+.ingredients h1 {
+    text-align: center;
+}
+
+.ingredients p {
+    text-align: center;
+}
+
+.ingredients img {
+    width: 15%;
+    margin: 30px 20px 0;
+}
+
+
+
+/* can edit this when the about desc is finished */
+.env{
+    /* margin-top: 200px; */
+    /* margin-bottom: 100px; */
+    margin: 30px 200px 0;
+}
+
+.env h1{
+    text-align: center;
+}
+
+.env p{
+    text-align: center;
+}
+
+.env .container{
+    height: 300px;
+}
+
+
+.location{
+    /* margin: 100px 100px 0px; */
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 10%;
+    padding-top: 90px; /*so that it is not covered when nav bar location is pressed */
+    width: 90%;
+}
+
+.location .section-title{
+    padding-bottom: 20px;
+    text-align: right;
+}
+
+.location p{
+    text-align: right;
+}
+
+.location .section-title{   
+    text-align: left;
+}
+
+.location .container{
+    height: 250px;
+}
+
+.location article{
+    float: left;
+    width: 50%;  
+    padding-right: 50px;
+    padding-left: 120px;
+}
+
+.location aside{
+    float: right;
+    width: 50%;
+    display:flex;
+    justify-content: left;
+}
+
+.location img{
+    width:80%;
+}

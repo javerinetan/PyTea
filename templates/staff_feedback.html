@@ -1,0 +1,198 @@
+{% extends "base.html" %}
+{% block title %} Staff PyTea - Feedback Database{% endblock %}
+{% block content %}
+
+<script>
+  nav = document.getElementsByClassName("nav-link");
+  nav[0].classList.remove("active");
+  nav[1].classList.remove("active");
+  nav[2].classList.remove("active");
+  nav[3].classList.add("active");
+  nav[4].classList.remove("active")
+
+  $(document).ready(function () {
+    $("#myInput").on("keyup", function () {
+      var value = $(this).val().toLowerCase();
+      $("#myTable tr").filter(function () {
+        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+      });
+    });
+  });
+
+
+</script>
+<style>
+  .header {
+    padding: 3rem 1.5rem;
+    text-align: center;
+  }
+
+  .lead {
+    font-size: 1.25rem;
+    font-weight: 300;
+  }
+
+  .btn-danger {
+    color: white;
+  }
+
+  .btn-danger:hover {
+    background-color: #BF0000;
+  }
+
+  .btn-warning {
+    background-color: #eee4d3;
+  }
+
+  .btn-warning:hover {
+    background-color: #eee4d3;
+    color: black;
+  }
+
+  .table-danger {
+    background-color: #f8d7da;
+    /* Red color */
+    color: #000000;
+    /* Text color */
+  }
+
+  .table-success {
+    background-color: #d4edda;
+    /* Green color */
+    color: #000000;
+    /* Text color */
+  }
+
+  .table-warning {
+    background-color: #fff3cd;
+    /* Yellow color */
+    color: #000000;
+    /* Text color */
+  }
+
+  .red-row td {
+    color: red;
+  }
+  /* Center the content of the delete-icon-cell class */
+  .fa-trash-can {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  /* Adjust the size and style of the delete icon */
+  .fa-trash-can {
+    color: #000000;
+    font-size: 1.5rem;
+    margin-top: 0.5rem;
+  }
+
+</style>
+{% if 'user_updated' in session %}
+<div class="alert alert-warning alert-dismissible">
+ <button type="button" class="close" data-dismiss="alert">&times;</button>
+ {{ session.pop('user_updated', None) }} was updated.
+</div>
+{% elif 'user_deleted' in session %}
+<div class="alert alert-danger alert-dismissible">
+ <button type="button" class="close" data-dismiss="alert">&times;</button>
+ {{ session.pop('user_deleted', None) }} was deleted.
+</div>
+{% endif %}
+
+<main class="container">
+  <div class="header">
+    <h1 class="">Feedback Database</h1>
+    {% if count == 0 %}
+    <p class="lead"> There are no feedback.</p>
+    {% elif count == 1 %}
+    <p class="lead"> There is 1 feedback.</p>
+    {% else %}
+    <p class="lead"> There are {{count}} feedbacks.</p>
+    {% endif %}
+  </div>
+
+  <div>
+    <input class="form-control " id="myInput" type="text" placeholder="Search..">
+    <br>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>User ID</th>
+          <th>Date</th>
+          <th>Saluation</th>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Email</th>
+          <th>Comment</th>
+          <th>Status</th>
+          <th>Update</th>
+          <th>Delete</th>
+        </tr>
+      </thead>
+      <tbody id="myTable">
+        {% for feedback in feedback_list %}
+        <tr {% if feedback.get_status()=='Redirect to Manager' %} class="table-danger" {% elif
+          feedback.get_status()=='Closed' %}class="table-success" {% elif feedback.get_status()=='In Progress'
+          %}class="table-warning" {% elif feedback.get_status()=='Open (2+ days)' %} class="red-row" {% endif %}>
+          <td>{{ feedback.get_user_id() }}</td>
+          <td>{{ feedback.get_time().date() }}</td>
+          <td>{{ feedback.get_salutation() }}</td>
+          <td>{{ feedback.get_first_name() }}</td>
+          <td>{{ feedback.get_last_name() }}</td>
+          <td>{{ feedback.get_email() }}</td>
+          <td>{{ feedback.get_feedback() }}</td>
+          <td>{{ feedback.get_status() }}</td>
+          <td><a href="/staff/update-customer-feedback/{{ feedback.get_user_id() }}" type="button"
+              class="btn btn-primary">Update</a></td>
+          <td>
+            <form action="{{url_for('staff.delete_customer_feedback', id=feedback.get_user_id())}}" method="POST">
+              <!-- Button to Open the Modal -->
+              <i class="fa-solid fa-trash-can" style="color: #000000; font-size: 1.5rem; justify-content: center; " data-toggle="modal" data-target="#myModal_{{feedback.get_user_id()}}" ></i>
+              <!-- The Modal -->
+              <div class="modal" id="myModal_{{feedback.get_user_id()}}">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                      <h4 class="modal-title">Delete Confirmation</h4>
+                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                      <p>Are you sure you want to delete this feedback (From User Account: {{ feedback.get_email() }})?
+                      </p>
+                      <form id="deleteForm">
+                        <div class="form-group">
+                          <label for="deleteReason">Reason for Deleting this Feedback</label>
+                          <select class="form-control" id="deleteReason" required>
+                            <option value="" disabled selected>Select a reason</option>
+                            <option value="inappropriate">Inappropriate Content</option>
+                            <option value="resolved">Spam</option>
+                            <option value="duplicate">Duplicate Feedback</option>
+                          </select>
+                        </div>
+                      </form>
+                    </div>
+
+
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                      <input type="submit" value="Delete" class="btn btn-danger">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</main>
+{% endblock %}

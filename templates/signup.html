@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% block title %} PyTea - Sign Up{% endblock %}
+
+{% block content %}
+{% from "includes/form_helper.html" import render_field %}
+<script>
+  nav = document.getElementsByClassName("nav-link");
+  nav[0].classList.remove("active");
+  nav[1].classList.remove("active");
+  nav[2].classList.remove("active");
+  nav[3].classList.remove("active");
+</script>
+<style>
+    .header {
+        padding: 3rem 1.5rem;
+        text-align: center;
+    }
+    .lead{
+        font-size: 1.25rem;
+        font-weight: 300;
+    }
+    .signup-form {
+        display: flex;
+        justify-content: center;
+    }
+    .signup {
+      max-width: 700px;
+    }
+</style>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+   {% if messages %}
+      {% for category, message in messages %}
+      {% if category == 'success' %}
+      <div class="alert alert-success alter-dismissable fade show" role="alert">
+        {{ message }}
+        <button class="close" data-dismiss="alert">
+         <!-- fix this x button -->
+         <span aria-hidden="true" style="font-size: 20px; margin-left: 10px;">&times;</span>
+        </button>
+     </div>
+      {% else %}
+      <div class="alert alert-danger alter-dismissable fade show" role="alert">
+         {{ message }}
+         <button class="close" data-dismiss="alert">
+          <!-- fix this x button -->
+          <span aria-hidden="true" style="font-size: 20px; margin-left: 10px;">&times;</span>
+         </button>
+      </div>
+      {% endif %}
+      {% endfor %}
+   {% endif %}
+{% endwith %}
+
+<main class="container signup">
+    <div class="header">
+        <h1 class="display-4">Sign Up Now!</h1>
+    </div>
+    <div class="signup-form ">
+        <form method="POST" action="" class="row g-2">
+            <div class="col-md-23">
+                {{ render_field(form.name, class="form-control") }}
+            </div>
+            <div class="col-md-23">
+                {{ render_field(form.email, class="form-control") }}
+            </div>
+            <div class="col-md-23">
+                {{ render_field(form.birth_month, class="form-select") }}
+            </div>
+            <div class="col-md-23">
+                {{ render_field(form.password, class="form-control") }}
+            </div>
+            <div class="col-md-23">
+                {{ render_field(form.confirm_password, class="form-control") }}
+            </div>
+            <div class="col-12">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="invalidCheck" required>
+                    <label class="form-check-label" for="invalidCheck">
+                        Agree to <a href="/termsandcondition">Terms & Condition</a>
+                    </label>
+                </div>
+            </div>
+            <div class="col-md-23"> </div>
+            <input type="submit" value="Sign up" class="btn btn-primary "/>
+
+        </form>
+    </div>
+</main>
+
+{% endblock %}

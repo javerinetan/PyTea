@@ -1,0 +1,390 @@
+{% extends "base.html" %}
+{% block title %} PyTea - User Settings{% endblock %}
+
+{% block content %}
+{% from "includes/form_helper.html" import render_field %}
+<script>
+  nav = document.getElementsByClassName("nav-link");
+  nav[0].classList.remove("active");
+  nav[1].classList.remove("active");
+  nav[2].classList.remove("active");
+  nav[3].classList.remove("active");
+</script>
+
+<style>
+/*   underline style
+  #v-pills-tab .active{
+    color: black;
+    background-color: transparent;
+    border-bottom: 3px solid #eddfc7;
+    padding-bottom: 2px;
+    border-radius:0;
+  } */
+
+  #v-pills-tab .active{
+    color: black;
+    background-color: #eee4d3;
+  }
+
+  #v-pills-tab .nav-link{
+    color: black;
+  }
+  #v-pills-tab{
+    padding: 0px 30px 10px 200px;
+  }
+  .btn-danger{
+    color: white;
+  }
+  .btn-danger:hover{
+    background-color: #BF0000;
+  }
+  .btn-success{
+    color: white;
+  }
+  .btn-success:hover{
+    background-color: #17784b;
+  }
+  .btn-secondary{
+    color: white;
+  }
+  .function {
+  display: flex;
+  justify-content: left;
+  }
+  .btn-group .l{
+    flex: 1;
+    margin-right: 10px;
+    min-width: 200px;
+    padding: 6px 92px;
+    border-radius: .25rem !important;
+  }
+  .btn-group .r{
+    margin-left: 10px;
+    min-width: 200px;
+    /* padding: 6px 150px; */
+  }
+  .btn-group .r .btn{
+    padding: 6px 127px;
+  }
+  .delete {
+    flex: 1;
+    margin-right: 10px;
+    padding: 6px 270px;
+    min-width: 200px;
+  }
+  footer{
+    margin-top:1000px;
+  }
+  .header {
+    padding: 3rem 1.5rem;
+    text-align: center;
+  }
+  #order-table {
+  max-height: 500px; /* Adjust the height to your desired value */
+  overflow-y: auto; /* Add a vertical scrollbar when the content overflows */
+  width: 160%; /* Make the table take up the full width available */
+}
+.table ul{
+  margin-bottom: 0;
+}
+</style>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+   {% if messages %}
+      {% for category, message in messages %}
+      {% if category == 'success' %}
+      <div class="alert alert-success alter-dismissable fade show" role="alert">
+        {{ message }}
+        <button class="close" data-dismiss="alert">
+         <!-- fix this x button -->
+         <span aria-hidden="true" style="font-size: 20px; margin-left: 10px;">&times;</span>
+        </button>
+     </div>
+      {% else %}
+      <div class="alert alert-danger alter-dismissable fade show" role="alert">
+         {{ message }}
+         <button class="close" data-dismiss="alert">
+          <!-- fix this x button -->
+          <span aria-hidden="true" style="font-size: 20px; margin-left: 10px;">&times;</span>
+         </button>
+      </div>
+      {% endif %}
+      {% endfor %}
+   {% endif %}
+{% endwith %}
+
+<h1 class="py-5 header">Profile Page</h1>
+<section>
+<div class="d-flex align-items-start">
+  <div class="nav flex-column nav-pills ml-3 " id="v-pills-tab" role="tablist" aria-orientation="vertical" style="white-space: nowrap;">
+    <button class="nav-link active" id="v-pills-home-tab" data-bs-toggle="tab" data-bs-target="#user-settings" type="button" role="tab" aria-controls="user-settings" aria-selected="true">User Settings</button>
+    <button class="nav-link" id="v-pills-profile-tab" data-bs-toggle="tab" data-bs-target="#order-history" type="button" role="tab" aria-controls="order-history" aria-selected="false">Order History</button>
+  </div>
+  <div class="tab-content" id="v-pills-tabContent">
+    <div class="tab-pane fade show active" id="user-settings" role="tabpanel" aria-labelledby="v-pills-home-tab">
+      <!-- <p>
+      Name: {{current_user.get_name()}}<br>
+      Email: {{current_user.get_email()}}<br>
+      Birthday Month: {{current_user.get_birth_month()}}<br>
+      Address: {{current_user.get_address()}}<br>
+      Postal Code: {{current_user.get_postal_code()}}<br>
+      Points Collected: ____<br>
+      Vouchers Available: ___<br>
+      </p> -->
+      <div class="">
+        <dl class="row" style="margin-right: 0; margin-bottom: 0;">
+          <dt class="col-sm-2">Name</dt>
+          <dd class="col-sm-10">
+            <dl class="row mb-1">
+              <dd class="col-sm-6 text-capitalize mb-1">{{current_user.get_name()}}</dd>
+              <dd class="col-sm-4 mb-1">
+                <form action="{{url_for('edit_settings', id=1)}}" method="POST">
+                  <img src="{{url_for('static', filename='icons/edit.png')}}" data-toggle="modal" data-target="#m_name" width="48" height="26" alt="">
+                      <!-- The Modal -->
+                      <div class="modal" id="m_name">
+                        <div class="modal-dialog">
+                          <div class="modal-content">
+                
+                            <!-- Modal Header -->
+                            <div class="modal-header">
+                              <h4 class="modal-title">Edit Name</h4>
+                              <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div>
+                
+                            <!-- Modal body -->
+                            <div class="modal-body">
+                                  <input type="text" class="form-control" id="name" name="name" placeholder="Name" required>
+                            </div>
+                
+                            <!-- Modal footer -->
+                            <div class="modal-footer">
+                              <input type="submit" value="Ok" class="btn btn-success">
+                              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                            </div>
+                
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+              </dd>
+            </dl>
+          </dd>
+
+          <dt class="col-sm-2 mb-3">Email</dt>
+          <dd class="col-sm-10 text-capitalize mb-3">{{current_user.get_email()}}</dd>
+
+          <dt class="col-sm-2 mb-3">Birthday Month</dt>
+          <dd class="col-sm-10 mb-3">{{current_user.get_birth_month()}}</dd>
+  
+          <dt class="col-sm-2 ">Address</dt>
+          <dd class="col-sm-10">
+            <dl class="row mb-1">
+              {% if current_user.get_address() == None %}
+                <dd class="col-sm-6 text-capitalize mb-1">-</dd>
+              {% else %}
+                <dd class="col-sm-6 text-capitalize mb-1">{{current_user.get_address()}}</dd>
+              {% endif %}
+              <dd class="col-sm-4 mb-1">
+                <form action="{{url_for('edit_settings', id=2)}}" method="POST">
+                  <!-- <button type="button" class="btn btn-primary mr-3" data-toggle="modal" data-target="#m_address">Change Password</button> -->
+                  <img src="{{url_for('static', filename='icons/edit.png')}}" data-toggle="modal" data-target="#m_address" width="48" height="26" alt="" style="z-index: 2!important;">
+                      <!-- The Modal -->
+                      <div class="modal" id="m_address">
+                        <div class="modal-dialog">
+                          <div class="modal-content">
+                
+                            <!-- Modal Header -->
+                            <div class="modal-header">
+                              <h4 class="modal-title">Edit Address</h4>
+                              <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div>
+                
+                            <!-- Modal body -->
+                            <div class="modal-body">
+                                  <input type="text" class="form-control" id="address" name="address" placeholder="Address" required>
+                            </div>
+                
+                            <!-- Modal footer -->
+                            <div class="modal-footer">
+                              <input type="submit" value="Ok" class="btn btn-success">
+                              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                            </div>
+                
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+              </dd>
+            </dl>
+          </dd>
+  
+          <dt class="col-sm-2">Postal Code</dt>
+          <dd class="col-sm-10">
+            <dl class="row mb-1">
+              {% if current_user.get_postal_code() == None %}
+                <dd class="col-sm-6 text-capitalize mb-1">-</dd>
+              {% else %}
+                <dd class="col-sm-6 text-capitalize mb-1">{{current_user.get_postal_code()}}</dd>
+              {% endif %}
+              <dd class="col-sm-4 mb-1">
+                <form action="{{url_for('edit_settings', id=3)}}" method="POST">
+                  <img src="{{url_for('static', filename='icons/edit.png')}}" data-toggle="modal" data-target="#m_code" width="48" height="26" alt="" style="z-index: 100!important;">
+                      <!-- The Modal -->
+                      <div class="modal" id="m_code">
+                        <div class="modal-dialog">
+                          <div class="modal-content">
+                
+                            <!-- Modal Header -->
+                            <div class="modal-header">
+                              <h4 class="modal-title">Edit Postal Code</h4>
+                              <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div>
+                
+                            <!-- Modal body -->
+                            <div class="modal-body">
+                                  <input type="text" class="form-control" id="postal_code" name="postal_code" placeholder="Postal Code" required>
+                            </div>
+                
+                            <!-- Modal footer -->
+                            <div class="modal-footer">
+                              <input type="submit" value="Ok" class="btn btn-success">
+                              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                            </div>
+                
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+              </dd>
+            </dl>
+          </dd>
+  
+          <dt class="col-sm-2 mb-3">Points Collected</dt>
+          <dd class="col-sm-10">{{"%.2f"|format(current_user.get_points())}}</dd>
+          
+  
+          <dt class="col-sm-2 mb-3">Vouchers Available</dt>
+          <dd class="col-sm-10">____</dd>
+        
+        </dl>
+      </div>
+      <!--      <a class="btn btn-primary" href="#" role="button">Change Password</a>-->
+      <div class="function">
+        <form action="{{url_for('edit_settings', id=4)}}" method="POST">
+          <div class="btn-group">
+          <button type="button" class="btn btn-primary col-md-6 l" data-toggle="modal" data-target="#password">Change Password</button>
+            <a href="/logout" class="r"><button type="button" class="btn btn-primary col-md-12">Log Out</button></a>
+              <!-- The Modal -->
+              <div class="modal" id="password">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                      <h4 class="modal-title">Change Password</h4>
+                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                      <p>Password must have at least: <br> • 8 Characters <br> • 1 Special Character <br> • 2 Numerials <br> • 2 Letters in Upper Case <br> • 3 Letters in Lower Case</p>
+                      <label for="password" class="form-label">Password</label>
+                      <input type="password" class="form-control" id="password" name="password" pattern="^(?=.*[A-Z].*[A-Z])(?=.*[!@#$&*])(?=.*[0-9].*[0-9])(?=.*[a-z].*[a-z].*[a-z]).{8,20}$" required>
+
+                      <label for="cfm_password" class="form-label">Confirm Password</label>
+                      <input type="password" class="form-control" id="cfm_password" name="cfm_password" pattern="^(?=.*[A-Z].*[A-Z])(?=.*[!@#$&*])(?=.*[0-9].*[0-9])(?=.*[a-z].*[a-z].*[a-z]).{8,20}$" required>
+
+                    </div>
+
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                      <input type="submit" value="Change Password" class="btn btn-danger">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+          </div>
+        </form>
+      </div>
+      <div class="function">
+      <form action="{{url_for('delete_user', id=current_user.get_id())}}" method="POST">
+          <!-- Button to Open the Modal -->
+          <button type="button" class="btn btn-danger mt-3 delete" data-toggle="modal" data-target="#myModal_{{current_user.get_id()}}">Delete Account</button>
+
+          <!-- The Modal -->
+          <div class="modal" id="myModal_{{current_user.get_id()}}">
+            <div class="modal-dialog">
+              <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header">
+                  <h4 class="modal-title">Delete Confirmation</h4>
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                  Are you sure you want to delete your account
+                  ({{current_user.get_email()}})?
+                </div>
+
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                  <input type="submit" value="Delete" class="btn btn-danger">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+
+    <div class="tab-pane fade" id="order-history" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+      {% if count > 0 %}
+      <table class="table table-striped" id="order-table">
+        <thead>
+          <tr>
+            <th>Order ID</th>
+            <th>Order Date</th>
+            <th>Order Items</th>
+            <th>Order Cost</th>
+          </tr>
+        </thead>
+        <tbody id="myTable">
+          {% for order in order_list %}
+          <tr>
+            <td>{{ order.get_order_id() }}</td>
+            <td>{{ order.get_date().date() }}</td>
+            <td>
+              {% for item in order.get_order().values() %}
+                {{ item.get_name() }} (Quantity: {{ item.get_quantity() }})
+                <ul>
+                  <li>{{ item.get_size() }}</li>
+                  <li>{{ item.get_sugar_level() }}</li>
+                  {% for t in item.get_topping() %}
+                  <li>{{t}}</li>
+                  {% endfor %}
+                </ul>
+                <br>
+                {% endfor %}
+            </td>
+            <td>${{"%.2f"|format(order.get_total_cost())}}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+      <span>No past orders</span>
+      {% endif %}
+    </div>
+  </div>
+</div>
+</section>
+
+{% endblock %}
