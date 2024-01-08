@@ -3,6 +3,10 @@
 
 ![logo-clear](https://github.com/NatelieNeo/WEBAP-Assignment/assets/90853880/66fc68ea-4742-4058-8c3d-e713605faa78)
 
+## Grade Received 
+
+🏆 A 
+
 ## What is PyTea?
 We created PyTea as bubble tea enthusiasts ourselves, and are heavily centered around healthy living and sustainability. The name is PyTea cleverly combines the word “Python” with “tea”, creating a playful yet tech-inspired name for our bubble tea shop. Additionally, it also sounds like “buy tea” when you pronounce it.
 
